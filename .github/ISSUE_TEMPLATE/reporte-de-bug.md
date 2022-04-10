@@ -28,7 +28,7 @@ Si se puede, agregar capturas de pantalla.
  - Navegador [e.g. chrome, safari]
  - Version [e.g. 22]
 
-**Informacion en celular: **
+**Informacion en celular:**
  - Dispositivo: [e.g. iPhone6]
  - OS: [e.g. iOS8.1]
  - Navegador [e.g. stock browser, safari]
