@@ -2,7 +2,7 @@
 name: Peticion de caracteristica
 about: Sugiere una idea para este proyecto
 title: "[FEATURE]"
-labels: enhancement
+labels: feature
 assignees: ''
 
 ---
