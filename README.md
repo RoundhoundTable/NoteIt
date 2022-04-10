@@ -1,10 +1,3 @@
-<style>
-  .icon {
-    align: center;
-    max-width: 100%;
-  }
-</style>
-
 <div align="center">
   <h1>NoteIt</h1>
   <img alt="MySQL" src="https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white" class="icon"/>
