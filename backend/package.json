@@ -1,0 +1,20 @@
+{
+  "name": "noteit",
+  "version": "1.0.0",
+  "description": "<div align=\"center\">\r   <h1>NoteIt</h1>\r   <img alt=\"MySQL\" src=\"https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white\" class=\"icon\"/>\r   <img alt=\"TypeORM\" src=\"https://img.shields.io/badge/typeorm-%2300f.svg?style=for-the-badge\" class=\"icon\"/>\r   <img alt=\"NodeJS\" src=\"https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white\" class=\"icon\"/>\r   <img alt=\"Express.js\" src=\"https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB\" class=\"icon\"/>\r   <img alt=\"React\" src=\"https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB\" class=\"icon\"\"/>\r   <img alt=\"TypeScript\" src=\"https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white\" class=\"icon\"/>\r   <img alt=\"Docker\" src=\"https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white\" class=\"icon\"/>\r </div>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoundhoundTable/NoteIt.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RoundhoundTable/NoteIt/issues"
+  },
+  "homepage": "https://github.com/RoundhoundTable/NoteIt#readme"
+}
