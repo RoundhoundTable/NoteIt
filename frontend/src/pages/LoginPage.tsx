@@ -4,7 +4,7 @@ import { FormInput } from "../components/FormInput";
 export const Login = () => {
   return (
     <div className="flex flex-col items-center justify-center mt-20">
-      <Logo />
+      <Logo className="w-52 h-32" />
       <div className="mt-20">
         <div className="px-5 h-3">
           <h2 className="text-center bg-white inline-block w-14 font-bold">
