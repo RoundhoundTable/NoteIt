@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
+import { Entities } from "../../../domain/entities";
 
 dotenv.config();
 
@@ -12,11 +13,15 @@ export const AppDataSource = new DataSource({
   database: process.env.DATABASE,
   synchronize: true,
   logging: true,
-  entities: [],
+  entities: [
+    Entities.Account,
+    Entities.User,
+    Entities.Notebook,
+    Entities.Membership,
+    Entities.Note,
+    Entities.Vote,
+    Entities.Comment,
+  ],
   subscribers: [],
   migrations: [],
-});
-
-AppDataSource.initialize().catch((err) => {
-  console.error(err);
 });
