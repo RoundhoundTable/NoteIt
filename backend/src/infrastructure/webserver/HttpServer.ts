@@ -16,7 +16,7 @@ export class HttpServer {
     });
   }
 
-  listen() {
+  async bootstrap() {
     this.app.listen(this.port, () => {
       console.log(`NoteIt server listening on port ${this.port}...`);
     });
