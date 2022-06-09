@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
-import { ERoles } from "../../enumerators/ERoles";
+import { ERoles } from "../enumerators/ERoles";
 import { Notebook } from "./Notebook";
 import { User } from "./User";
 
