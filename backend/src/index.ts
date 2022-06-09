@@ -5,4 +5,4 @@ dotenv.config();
 
 const server: HttpServer = new HttpServer();
 
-server.listen();
+server.bootstrap();
