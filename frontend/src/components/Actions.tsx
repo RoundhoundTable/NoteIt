@@ -1,8 +1,12 @@
 import { NavButon } from "./NavButton";
 
-export const Actions = () => {
+interface INavButtonProp {
+  className?: string
+}
+
+export const Actions = ({className}: INavButtonProp) => {
   return (
-    <div className="flex-row align-middle hidden md:flex">
+    <div className={className}>
       <NavButon icon="ant-design:home-filled" />
       <NavButon icon="ic:outline-explore" />
       <NavButon icon="fluent:add-circle-24-regular" />
