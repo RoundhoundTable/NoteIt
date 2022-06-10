@@ -1,10 +1,10 @@
 import { NavButon } from "./NavButton";
 
-interface INavButtonProp {
+interface IActionsProp {
   className?: string
 }
 
-export const Actions = ({className}: INavButtonProp) => {
+export const Actions = ({className}: IActionsProp) => {
   return (
     <div className={className}>
       <NavButon icon="ant-design:home-filled" />
