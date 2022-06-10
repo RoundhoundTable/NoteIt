@@ -1,6 +1,7 @@
 import { Logo } from "../components/Logo";
 import { FormInput } from "../components/FormInput";
 import { FormButton } from "../components/FormButton";
+import { Link } from "react-router-dom";
 
 export const RegisterPage = () => {
   return (
@@ -26,9 +27,9 @@ export const RegisterPage = () => {
         </form>
         <h2 className="flex flex-row items-center justify-center mt-10 font-light text-primary-700">
           Have an account?
-          <a className="ml-2 text-primary-500 font-bold" href="">
+          <Link to="/account/login" className="ml-2 text-primary-500 font-bold" >
             Login
-          </a>
+          </Link>
         </h2>
       </div>
     </div>
