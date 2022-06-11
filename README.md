@@ -10,3 +10,5 @@
   <img alt="TypeScript" src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" class="icon"/>
   <img alt="Docker" src="https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white" class="icon"/>
 </div>
+
+El desarollo del backend se encuentra en la rama "backend" y el desarrollo del frontend en la rama "frontend", una vez terminado el proyecto se va a hacer un merge de ambas ramas a la rama master donde por ahora estará la documentación
