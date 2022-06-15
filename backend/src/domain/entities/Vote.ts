@@ -13,11 +13,11 @@ export class Vote {
   @Column()
   value: number;
 
-  @ManyToOne(() => User, (user) => user.votes, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.votes)
   @JoinColumn({ name: "username" })
   user: Promise<User>;
 
-  @ManyToOne(() => Note, (note) => note.votes, { onDelete: "CASCADE" })
+  @ManyToOne(() => Note, (note) => note.votes)
   @JoinColumn({ name: "note_id" })
   note: Promise<Note>;
 }

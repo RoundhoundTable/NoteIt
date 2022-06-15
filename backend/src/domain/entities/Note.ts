@@ -29,6 +29,9 @@ export class Note {
   @Column()
   title: string;
 
+  @Column({ name: "like_count", default: 0 })
+  score: number;
+
   @CreateDateColumn({ name: "created_on" })
   createdOn: Date;
 

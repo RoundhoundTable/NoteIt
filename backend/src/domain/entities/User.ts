@@ -20,14 +20,17 @@ export class User {
   @Column({ name: "display_name" })
   displayName: string;
 
+  @Column({ name: "account_id" })
+  accountId: string;
+
   @Column({ default: "default_user.jpg" })
   thumbnail: string;
 
-  @OneToOne(() => Account, { onDelete: "CASCADE" })
+  @OneToOne(() => Account)
   @JoinColumn({ name: "account_id" })
-  account: Account;
+  account: Promise<Account>;
 
-  @OneToMany(() => Note, (note) => note.user, { onDelete: "SET NULL" })
+  @OneToMany(() => Note, (note) => note.user)
   notes: Promise<Note[]>;
 
   @OneToMany(() => Membership, (membership) => membership.notebook, {
@@ -35,9 +38,9 @@ export class User {
   })
   notebooks: Promise<Membership[]>;
 
-  @OneToMany(() => Vote, (vote) => vote.note, { onDelete: "CASCADE" })
+  @OneToMany(() => Vote, (vote) => vote.note)
   votes: Promise<Vote[]>;
 
-  @OneToMany(() => Comment, (comment) => comment.note, { onDelete: "SET NULL" })
+  @OneToMany(() => Comment, (comment) => comment.note)
   comments: Promise<Comment[]>;
 }

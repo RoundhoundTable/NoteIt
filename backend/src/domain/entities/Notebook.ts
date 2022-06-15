@@ -20,11 +20,9 @@ export class Notebook {
   @CreateDateColumn({ name: "created_on" })
   createdOn: Date;
 
-  @OneToMany(() => Note, (note) => note.notebook, { onDelete: "CASCADE" })
+  @OneToMany(() => Note, (note) => note.notebook)
   notes: Promise<Note[]>;
 
-  @OneToMany(() => Membership, (membership) => membership.user, {
-    onDelete: "CASCADE",
-  })
+  @OneToMany(() => Membership, (membership) => membership.user)
   members: Promise<Membership[]>;
 }
