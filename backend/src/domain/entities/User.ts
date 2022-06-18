@@ -12,6 +12,9 @@ import { Note } from "./Note";
 import { Vote } from "./Vote";
 import { Comment } from "./Comment";
 
+const DEFAULT_IMAGE_URL =
+  "https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/profile-pictures%2Fdefault.jpg?alt=media&token=b4d777a9-a23b-4812-a42b-b665b25ee496";
+
 @Entity("user")
 export class User {
   @PrimaryColumn()
@@ -23,7 +26,7 @@ export class User {
   @Column({ name: "account_id" })
   accountId: string;
 
-  @Column({ default: "default_user.jpg" })
+  @Column({ default: DEFAULT_IMAGE_URL })
   thumbnail: string;
 
   @OneToOne(() => Account)
