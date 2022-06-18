@@ -13,16 +13,6 @@ export class NoteService {
   ): Promise<Entities.Note[]> {
     try {
       return await this.noteRepository.find({
-        select: {
-          id: true,
-          title: true,
-          content: true,
-          createdOn: true,
-          score: true,
-          notebook: {
-            name: true,
-          },
-        },
         where: {
           username: target,
         },
@@ -46,17 +36,6 @@ export class NoteService {
   ): Promise<Entities.Note[]> {
     try {
       return await this.noteRepository.find({
-        select: {
-          id: true,
-          title: true,
-          content: true,
-          createdOn: true,
-          score: true,
-          user: {
-            displayName: true,
-            thumbnail: true,
-          },
-        },
         where: {
           notebookName,
         },
@@ -82,18 +61,18 @@ export class NoteService {
 
       return await this.noteRepository.find({
         select: {
-          id: true,
-          createdOn: true,
-          score: true,
-          content: true,
-          title: true,
-          user: {
-            displayName: true,
-            thumbnail: true,
-          },
           notebook: {
             name: true,
           },
+          user: {
+            username: true,
+            displayName: true,
+            thumbnail: true,
+          },
+        },
+        relations: {
+          notebook: true,
+          user: true,
         },
         where: {
           notebookName: In(joinedNotebooks),
@@ -110,25 +89,24 @@ export class NoteService {
     try {
       return await this.noteRepository.findOne({
         select: {
-          id: true,
-          createdOn: true,
-          score: true,
-          content: true,
-          title: true,
-          user: {
-            displayName: true,
-            thumbnail: true,
-          },
-          notebook: {
-            name: true,
-          },
           comments: {
-            content: true,
             createdOn: true,
+            content: true,
+            id: true,
             user: {
+              username: true,
               displayName: true,
               thumbnail: true,
             },
+          },
+          notebook: {
+            name: true,
+            thumbnail: true,
+          },
+          user: {
+            username: true,
+            displayName: true,
+            thumbnail: true,
           },
         },
         relations: {
