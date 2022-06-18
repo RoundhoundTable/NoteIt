@@ -10,6 +10,9 @@ export class NotebookService {
     payload: DeepPartial<Entities.Notebook>
   ): Promise<Entities.Notebook> {
     try {
+      if (!this.notebookRepository.findOne({ where: { name: payload.name } }))
+        throw new Error("NOTEBOOK ALREADY EXISTS");
+
       let notebook: Entities.Notebook = this.notebookRepository.create(payload);
       return await this.notebookRepository.save(notebook);
     } catch (e) {

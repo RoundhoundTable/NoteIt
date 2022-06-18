@@ -8,6 +8,11 @@ export class UserService {
 
   async create(payload: DeepPartial<Entities.User>, accountId: string) {
     try {
+      if (
+        !this.userRepository.findOne({ where: { username: payload.username } })
+      )
+        throw new Error("USERNAME ALREADY IN USE");
+
       const user: Entities.User = this.userRepository.create({
         ...payload,
         accountId,

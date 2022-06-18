@@ -11,6 +11,9 @@ export class AccountService {
     payload: DeepPartial<Entities.Account>
   ): Promise<Entities.Account> {
     try {
+      if (!this.accountRepository.findOne({ where: { email: payload.email } }))
+        throw new Error("AN ACCOUNT ALREADY EXISTS");
+
       let account: Entities.Account = this.accountRepository.create({
         ...payload,
       });
