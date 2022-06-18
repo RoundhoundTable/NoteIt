@@ -25,3 +25,9 @@ export const AppDataSource = new DataSource({
   subscribers: [],
   migrations: [],
 });
+
+AppDataSource.initialize()
+  .then()
+  .catch((err) => {
+    console.error(err);
+  });
