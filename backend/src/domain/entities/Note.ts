@@ -17,10 +17,10 @@ export class Note {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column()
+  @Column({ select: false })
   username: string;
 
-  @Column({ name: "notebook_name" })
+  @Column({ name: "notebook_name", select: false })
   notebookName: string;
 
   @Column()
@@ -28,9 +28,6 @@ export class Note {
 
   @Column()
   title: string;
-
-  @Column({ name: "like_count", default: 0 })
-  score: number;
 
   @CreateDateColumn({ name: "created_on" })
   createdOn: Date;
