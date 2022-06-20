@@ -7,28 +7,18 @@ export class UserService {
   private readonly userRepository: Repository<Entities.User>;
 
   async create(payload: DeepPartial<Entities.User>, accountId: string) {
-    try {
-      if (
-        !this.userRepository.findOne({ where: { username: payload.username } })
-      )
-        throw new Error("USERNAME ALREADY IN USE");
+    if (!this.userRepository.findOne({ where: { username: payload.username } }))
+      throw new Error("USERNAME ALREADY IN USE");
 
-      const user: Entities.User = this.userRepository.create({
-        ...payload,
-        accountId,
-      });
+    const user: Entities.User = this.userRepository.create({
+      ...payload,
+      accountId,
+    });
 
-      return await this.userRepository.save(user);
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.userRepository.save(user);
   }
 
   async update(payload: DeepPartial<Entities.User>, username: string) {
-    try {
-      return await this.userRepository.update(username, payload);
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.userRepository.update(username, payload);
   }
 }

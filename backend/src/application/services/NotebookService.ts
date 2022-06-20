@@ -9,32 +9,20 @@ export class NotebookService {
   async create(
     payload: DeepPartial<Entities.Notebook>
   ): Promise<Entities.Notebook> {
-    try {
-      if (!this.notebookRepository.findOne({ where: { name: payload.name } }))
-        throw new Error("NOTEBOOK ALREADY EXISTS");
+    if (!this.notebookRepository.findOne({ where: { name: payload.name } }))
+      throw new Error("NOTEBOOK ALREADY EXISTS");
 
-      let notebook: Entities.Notebook = this.notebookRepository.create(payload);
-      return await this.notebookRepository.save(notebook);
-    } catch (e) {
-      console.log(e);
-    }
+    let notebook: Entities.Notebook = this.notebookRepository.create(payload);
+    return await this.notebookRepository.save(notebook);
   }
 
   async delete(notebook: string) {
-    try {
-      return await this.notebookRepository.delete({
-        name: notebook,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.notebookRepository.delete({
+      name: notebook,
+    });
   }
 
   async update(payload: DeepPartial<Entities.Notebook>, notebook: string) {
-    try {
-      return await this.notebookRepository.update(notebook, payload);
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.notebookRepository.update(notebook, payload);
   }
 }

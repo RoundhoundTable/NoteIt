@@ -9,19 +9,11 @@ export class CommentService {
   async create(
     payload: DeepPartial<Entities.Comment>
   ): Promise<Entities.Comment> {
-    try {
-      let comment: Entities.Comment = this.commentRepository.create(payload);
-      return await this.commentRepository.save(comment);
-    } catch (e) {
-      console.log(e);
-    }
+    let comment: Entities.Comment = this.commentRepository.create(payload);
+    return await this.commentRepository.save(comment);
   }
 
   async delete(id: string) {
-    try {
-      return await this.commentRepository.delete(id);
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.commentRepository.delete(id);
   }
 }

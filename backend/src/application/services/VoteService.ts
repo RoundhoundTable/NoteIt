@@ -8,18 +8,14 @@ export class VoteService {
   private readonly voteRepository: Repository<Entities.Vote>;
 
   async checkUserLike(username: string, noteId: string): Promise<boolean> {
-    try {
-      let vote: Entities.Vote = await this.voteRepository.findOne({
-        where: {
-          username,
-          noteId,
-        },
-      });
+    let vote: Entities.Vote = await this.voteRepository.findOne({
+      where: {
+        username,
+        noteId,
+      },
+    });
 
-      return vote ? true : false;
-    } catch (e) {
-      console.log(e);
-    }
+    return vote ? true : false;
   }
 
   async vote(
@@ -27,16 +23,12 @@ export class VoteService {
     username: string,
     value: number
   ): Promise<Entities.Vote> {
-    try {
-      let vote: Entities.Vote = this.voteRepository.create({
-        noteId,
-        username,
-        value,
-      });
+    let vote: Entities.Vote = this.voteRepository.create({
+      noteId,
+      username,
+      value,
+    });
 
-      return await this.voteRepository.save(vote);
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.voteRepository.save(vote);
   }
 }

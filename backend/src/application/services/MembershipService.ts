@@ -8,55 +8,39 @@ export class MembershipService {
   private readonly membershipRepository: Repository<Entities.Membership>;
 
   async getUserMembership(username: string): Promise<Entities.Membership[]> {
-    try {
-      return await this.membershipRepository.find({
-        select: {
-          notebookName: true,
-        },
-        where: {
-          username: username,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.membershipRepository.find({
+      select: {
+        notebookName: true,
+      },
+      where: {
+        username: username,
+      },
+    });
   }
 
   async delete(username?: string, notebook?: string) {
-    try {
-      let criteria = <FindOptionsWhere<Entities.Membership>>[
-        { username },
-        { notebook },
-      ];
+    let criteria = <FindOptionsWhere<Entities.Membership>>[
+      { username },
+      { notebook },
+    ];
 
-      return await this.membershipRepository.delete(criteria);
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.membershipRepository.delete(criteria);
   }
 
   async create(
     payload: DeepPartial<Entities.Membership>
   ): Promise<Entities.Membership> {
-    try {
-      let membership: Entities.Membership =
-        this.membershipRepository.create(payload);
-      return await this.membershipRepository.save(membership);
-    } catch (e) {
-      console.log(e);
-    }
+    let membership: Entities.Membership =
+      this.membershipRepository.create(payload);
+    return await this.membershipRepository.save(membership);
   }
 
   async changeRole(username: string, notebook: string, role: ERoles) {
-    try {
-      let criteria = <FindOptionsWhere<Entities.Membership>>{
-        username,
-        notebook,
-      };
+    let criteria = <FindOptionsWhere<Entities.Membership>>{
+      username,
+      notebook,
+    };
 
-      return await this.membershipRepository.update(criteria, { role });
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.membershipRepository.update(criteria, { role });
   }
 }

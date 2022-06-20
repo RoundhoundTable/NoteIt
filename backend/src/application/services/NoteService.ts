@@ -11,116 +11,100 @@ export class NoteService {
     target: string,
     skip: number = 0
   ): Promise<Entities.Note[]> {
-    try {
-      return await this.noteRepository.find({
-        where: {
-          username: target,
-        },
-        relations: {
-          notebook: true,
-        },
-        order: {
-          createdOn: "DESC",
-        },
-        take: 5,
-        skip,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.noteRepository.find({
+      where: {
+        username: target,
+      },
+      relations: {
+        notebook: true,
+      },
+      order: {
+        createdOn: "DESC",
+      },
+      take: 5,
+      skip,
+    });
   }
 
   async getFromNotebook(
     notebookName: string,
     skip: number = 0
   ): Promise<Entities.Note[]> {
-    try {
-      return await this.noteRepository.find({
-        where: {
-          notebookName,
-        },
-        relations: {
-          user: true,
-        },
-        order: {
-          createdOn: "DESC",
-        },
-        take: 5,
-        skip,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.noteRepository.find({
+      where: {
+        notebookName,
+      },
+      relations: {
+        user: true,
+      },
+      order: {
+        createdOn: "DESC",
+      },
+      take: 5,
+      skip,
+    });
   }
 
   async getFeed(username: string, skip: number = 0): Promise<Entities.Note[]> {
-    try {
-      const joinedNotebooks: string[] = (
-        await Services.Membership.getUserMembership(username)
-      ).map((membership) => membership.notebookName);
+    const joinedNotebooks: string[] = (
+      await Services.Membership.getUserMembership(username)
+    ).map((membership) => membership.notebookName);
 
-      return await this.noteRepository.find({
-        select: {
-          notebook: {
-            name: true,
-          },
-          user: {
-            username: true,
-            displayName: true,
-            thumbnail: true,
-          },
+    return await this.noteRepository.find({
+      select: {
+        notebook: {
+          name: true,
         },
-        relations: {
-          notebook: true,
-          user: true,
+        user: {
+          username: true,
+          displayName: true,
+          thumbnail: true,
         },
-        where: {
-          notebookName: In(joinedNotebooks),
-        },
-        take: 5,
-        skip,
-      });
-    } catch (e) {
-      console.log(e);
-    }
+      },
+      relations: {
+        notebook: true,
+        user: true,
+      },
+      where: {
+        notebookName: In(joinedNotebooks),
+      },
+      take: 5,
+      skip,
+    });
   }
 
   async get(id: string) {
-    try {
-      return await this.noteRepository.findOne({
-        select: {
-          comments: {
-            createdOn: true,
-            content: true,
-            id: true,
-            user: {
-              username: true,
-              displayName: true,
-              thumbnail: true,
-            },
-          },
-          notebook: {
-            name: true,
-            thumbnail: true,
-          },
+    return await this.noteRepository.findOne({
+      select: {
+        comments: {
+          createdOn: true,
+          content: true,
+          id: true,
           user: {
             username: true,
             displayName: true,
             thumbnail: true,
           },
         },
-        relations: {
-          comments: true,
-          notebook: true,
-          user: true,
+        notebook: {
+          name: true,
+          thumbnail: true,
         },
-        where: {
-          id,
+        user: {
+          username: true,
+          displayName: true,
+          thumbnail: true,
         },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+      },
+      relations: {
+        comments: true,
+        notebook: true,
+        user: true,
+      },
+      where: {
+        id,
+      },
+    });
   }
 
   async update(payload: DeepPartial<Entities.Note>) {
@@ -129,22 +113,14 @@ export class NoteService {
   }
 
   async create(payload: DeepPartial<Entities.Note>): Promise<Entities.Note> {
-    try {
-      let note: Entities.Note = this.noteRepository.create({
-        ...payload,
-      });
+    let note: Entities.Note = this.noteRepository.create({
+      ...payload,
+    });
 
-      return await this.noteRepository.save(note);
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.noteRepository.save(note);
   }
 
   async delete(id: string): Promise<DeleteResult> {
-    try {
-      return await this.noteRepository.delete(id);
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.noteRepository.delete(id);
   }
 }

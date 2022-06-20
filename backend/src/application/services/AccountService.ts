@@ -10,31 +10,23 @@ export class AccountService {
   async create(
     payload: DeepPartial<Entities.Account>
   ): Promise<Entities.Account> {
-    try {
-      if (!this.accountRepository.findOne({ where: { email: payload.email } }))
-        throw new Error("AN ACCOUNT ALREADY EXISTS");
+    if (!this.accountRepository.findOne({ where: { email: payload.email } }))
+      throw new Error("AN ACCOUNT ALREADY EXISTS");
 
-      let account: Entities.Account = this.accountRepository.create({
-        ...payload,
-      });
+    let account: Entities.Account = this.accountRepository.create({
+      ...payload,
+    });
 
-      account.password = await bcrypt.hash(account.password, 10);
+    account.password = await bcrypt.hash(account.password, 10);
 
-      return await this.accountRepository.save(account);
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.accountRepository.save(account);
   }
 
   async get(email: string): Promise<Entities.Account> {
-    try {
-      return await this.accountRepository.findOne({
-        where: {
-          email,
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
+    return await this.accountRepository.findOne({
+      where: {
+        email,
+      },
+    });
   }
 }
