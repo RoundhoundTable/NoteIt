@@ -7,14 +7,17 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from "typeorm";
+import { Field, ObjectType } from "type-graphql";
 import { Notebook } from "./Notebook";
 import { User } from "./User";
 import { Vote } from "./Vote";
 import { Comment } from "./Comment";
 
 @Entity("note")
+@ObjectType()
 export class Note {
   @PrimaryGeneratedColumn("uuid")
+  @Field()
   id: string;
 
   @Column({ select: false })
@@ -23,26 +26,39 @@ export class Note {
   @Column({ name: "notebook_name", select: false })
   notebookName: string;
 
-  @Column()
+  @Column({ type: "text" })
+  @Field()
   content: string;
 
   @Column()
+  @Field()
   title: string;
 
   @CreateDateColumn({ name: "created_on" })
+  @Field()
   createdOn: Date;
 
   @ManyToOne(() => User, (user) => user.notes)
   @JoinColumn({ name: "username" })
-  user: Promise<User>;
+  @Field(() => User, { nullable: true })
+  user?: User;
 
   @ManyToOne(() => Notebook, (notebook) => notebook.notes)
   @JoinColumn({ name: "notebook_name" })
-  notebook: Promise<Notebook>;
+  @Field(() => Notebook, { nullable: true })
+  notebook?: Notebook;
 
   @OneToMany(() => Vote, (vote) => vote.user)
-  votes: Promise<Vote[]>;
+  @Field(() => [Vote], { nullable: true })
+  votes?: Vote[];
 
   @OneToMany(() => Comment, (comment) => comment.user)
-  comments: Promise<Comment[]>;
+  @Field(() => [Comment], { nullable: true })
+  comments?: Comment[];
+
+  @Field({ nullable: true })
+  likedByUser?: boolean;
+
+  @Field()
+  score?: number;
 }

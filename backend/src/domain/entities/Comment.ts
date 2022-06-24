@@ -1,3 +1,4 @@
+import { Field, ObjectType } from "type-graphql";
 import {
   Column,
   CreateDateColumn,
@@ -11,8 +12,10 @@ import { Note } from "./Note";
 import { User } from "./User";
 
 @Entity("comment")
+@ObjectType()
 export class Comment {
   @PrimaryGeneratedColumn("uuid")
+  @Field()
   id: string;
 
   @PrimaryColumn()
@@ -22,16 +25,20 @@ export class Comment {
   noteId: string;
 
   @Column({ type: "text" })
+  @Field()
   content: string;
 
   @CreateDateColumn({ name: "created_on" })
+  @Field()
   createdOn: Date;
 
   @ManyToOne(() => User, (user) => user.comments)
   @JoinColumn({ name: "username" })
-  user: Promise<User>;
+  @Field(() => User)
+  user: User;
 
   @ManyToOne(() => Note, (note) => note.comments)
   @JoinColumn({ name: "note_id" })
-  note: Promise<Note>;
+  @Field(() => Note, { nullable: true })
+  note: Note;
 }
