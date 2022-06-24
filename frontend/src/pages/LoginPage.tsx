@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 export const LoginPage = () => {
   return (
-    <div className="flex flex-col items-center justify-center mt-20">
+    <div className="flex flex-col items-center justify-center">
       <Logo className="w-44" />
       <div className="mt-10">
         <div className="px-5 h-3">
