@@ -18,12 +18,12 @@ export const Note = () => {
                 <p className="line-clamp-[15] text-base">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione illum maxime quibusdam? Delectus voluptatem quo veniam, accusamus optio labore. Quae, eius velit voluptates commodi nam amet placeat officiis consequuntur cupiditate.
                     Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consectetur possimus suscipit sed. Numquam molestias labore tenetur. Facilis omnis debitis distinctio nisi provident quod neque explicabo unde aliquid accusantium? Similique, sapiente?
-                    </p>
+                </p>
             </div>
             <div className="flex flex-row justify-evenly mt-4">
                 <div className="flex flex-row items-center">
                     <Icon className="w-6 h-6 text-primary-500" icon="bx:like"/>
-                    <p className="text-sm text-primary-500 font-medium ml-2 mr-4">123</p>
+                    <p className="text-sm text-primary-500 font-medium mx-2">123</p>
                     <Icon className="w-6 h-6 text-primary-500" icon="bx:dislike"/>
                 </div>
                 <Icon className="w-6 h-6 text-primary-500" icon="bxs:comment"/>
