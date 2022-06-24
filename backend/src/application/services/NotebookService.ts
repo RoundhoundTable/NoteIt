@@ -9,9 +9,6 @@ export class NotebookService {
   async create(
     payload: DeepPartial<Entities.Notebook>
   ): Promise<Entities.Notebook> {
-    if (!this.notebookRepository.findOne({ where: { name: payload.name } }))
-      throw new Error("NOTEBOOK ALREADY EXISTS");
-
     let notebook: Entities.Notebook = this.notebookRepository.create(payload);
     return await this.notebookRepository.save(notebook);
   }
