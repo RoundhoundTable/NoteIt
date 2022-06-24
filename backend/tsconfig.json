@@ -3,10 +3,11 @@
   { 
     "module": "commonjs", 
     "esModuleInterop": true, 
-    "target": "es6", 
+    "target": "es2018", 
     "moduleResolution": "node", 
     "rootDir": "src", 
     "outDir": "dist" ,
+    "lib": ["es2018", "esnext.asynciterable"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   } 
