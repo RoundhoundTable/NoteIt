@@ -1,9 +1,11 @@
+import { ObjectType, Field } from "type-graphql";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { ERoles } from "../enumerators/ERoles";
 import { Notebook } from "./Notebook";
 import { User } from "./User";
 
 @Entity("membership")
+@ObjectType()
 export class Membership {
   @PrimaryColumn()
   username: string;
@@ -16,13 +18,16 @@ export class Membership {
     enum: ERoles,
     default: ERoles.USER,
   })
+  @Field(() => ERoles)
   role: ERoles;
 
   @ManyToOne(() => User, (user) => user.notebooks)
   @JoinColumn({ name: "username" })
-  user: Promise<User>;
+  @Field(() => User)
+  user: User;
 
   @ManyToOne(() => Notebook, (notebook) => notebook.members)
   @JoinColumn({ name: "notebook" })
-  notebook: Promise<Notebook>;
+  @Field(() => Notebook)
+  notebook: Notebook;
 }

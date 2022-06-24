@@ -1,3 +1,4 @@
+import { registerEnumType } from "type-graphql";
 import { Account as AccountEntity } from "./Account";
 import { Membership as MembershipEntity } from "./Membership";
 import { User as UserEntity } from "./User";
@@ -5,6 +6,12 @@ import { Note as NoteEntity } from "./Note";
 import { Notebook as NotebookEntity } from "./Notebook";
 import { Vote as VoteEntity } from "./Vote";
 import { Comment as CommentEntity } from "./Comment";
+import { ERoles } from "../enumerators/ERoles";
+
+registerEnumType(ERoles, {
+  name: "Roles",
+  description: "Roles for the user membership",
+});
 
 export namespace Entities {
   export const Account = AccountEntity;

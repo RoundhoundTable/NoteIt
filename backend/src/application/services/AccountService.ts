@@ -1,4 +1,10 @@
-import { DeepPartial, In, Repository } from "typeorm";
+import {
+  DeepPartial,
+  DeleteResult,
+  FindOptionsWhere,
+  In,
+  Repository,
+} from "typeorm";
 import { Entities } from "../../domain/entities";
 import { InjectRepository } from "../decorators/InjectRepository";
 import bcrypt from "bcrypt";
@@ -10,9 +16,6 @@ export class AccountService {
   async create(
     payload: DeepPartial<Entities.Account>
   ): Promise<Entities.Account> {
-    if (!this.accountRepository.findOne({ where: { email: payload.email } }))
-      throw new Error("AN ACCOUNT ALREADY EXISTS");
-
     let account: Entities.Account = this.accountRepository.create({
       ...payload,
     });
@@ -27,6 +30,14 @@ export class AccountService {
       where: {
         email,
       },
+    });
+  }
+
+  async delete(accountId: string): Promise<DeleteResult> {
+    return await this.accountRepository.delete(<
+      FindOptionsWhere<Entities.Account>
+    >{
+      id: accountId,
     });
   }
 }

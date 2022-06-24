@@ -1,14 +1,14 @@
-import { Repository } from "typeorm";
-import { Services } from ".";
+import { DeleteResult, FindOptionsWhere, Repository } from "typeorm";
 import { Entities } from "../../domain/entities";
 import { InjectRepository } from "../decorators/InjectRepository";
+import { CreateVote, DeleteVote } from "../types/Vote";
 
 export class VoteService {
   @InjectRepository(Entities.Vote)
   private readonly voteRepository: Repository<Entities.Vote>;
 
   async checkUserLike(username: string, noteId: string): Promise<boolean> {
-    let vote: Entities.Vote = await this.voteRepository.findOne({
+    const vote: Entities.Vote = await this.voteRepository.findOne({
       where: {
         username,
         noteId,
@@ -18,17 +18,23 @@ export class VoteService {
     return vote ? true : false;
   }
 
-  async vote(
-    noteId: string,
-    username: string,
-    value: number
-  ): Promise<Entities.Vote> {
-    let vote: Entities.Vote = this.voteRepository.create({
-      noteId,
-      username,
-      value,
-    });
+  async create(payload: CreateVote): Promise<Entities.Vote> {
+    const vote: Entities.Vote = this.voteRepository.create(payload);
 
     return await this.voteRepository.save(vote);
+  }
+
+  async delete(payload: DeleteVote): Promise<DeleteResult> {
+    return await this.voteRepository.delete(<FindOptionsWhere<Entities.Vote>>{
+      ...payload,
+    });
+  }
+
+  async count(noteId: string): Promise<number> {
+    return await this.voteRepository.count({
+      where: {
+        noteId,
+      },
+    });
   }
 }

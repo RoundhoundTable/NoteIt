@@ -1,101 +1,67 @@
-import { DeepPartial, DeleteResult, In, Repository } from "typeorm";
+import {
+  DeepPartial,
+  DeleteResult,
+  FindOptionsWhere,
+  In,
+  Repository,
+} from "typeorm";
 import { Services } from ".";
 import { Entities } from "../../domain/entities";
+import { EFromOptions } from "../../domain/enumerators/EFromOptions";
 import { InjectRepository } from "../decorators/InjectRepository";
+import { NoteOutput } from "../types/Note";
 
 export class NoteService {
   @InjectRepository(Entities.Note)
   private readonly noteRepository: Repository<Entities.Note>;
 
-  async getFromUser(
-    target: string,
+  async get(
+    type: EFromOptions,
+    source: string,
     skip: number = 0
-  ): Promise<Entities.Note[]> {
-    return await this.noteRepository.find({
-      where: {
-        username: target,
-      },
-      relations: {
-        notebook: true,
-      },
-      order: {
-        createdOn: "DESC",
-      },
-      take: 5,
-      skip,
-    });
-  }
+  ): Promise<NoteOutput[]> {
+    let where: FindOptionsWhere<Entities.Note>;
 
-  async getFromNotebook(
-    notebookName: string,
-    skip: number = 0
-  ): Promise<Entities.Note[]> {
-    return await this.noteRepository.find({
-      where: {
-        notebookName,
-      },
-      relations: {
-        user: true,
-      },
-      order: {
-        createdOn: "DESC",
-      },
-      take: 5,
-      skip,
-    });
-  }
+    switch (type) {
+      case EFromOptions.FEED: {
+        const joinedNotebooks: string[] = (
+          await Services.Membership.getUserMembership(source)
+        ).map((membership) => membership.notebookName);
 
-  async getFeed(username: string, skip: number = 0): Promise<Entities.Note[]> {
-    const joinedNotebooks: string[] = (
-      await Services.Membership.getUserMembership(username)
-    ).map((membership) => membership.notebookName);
+        where = {
+          notebookName: In(joinedNotebooks),
+        };
+        break;
+      }
+      case EFromOptions.USER: {
+        where = {
+          username: source,
+        };
+        break;
+      }
+      case EFromOptions.NOTEBOOK: {
+        where = {
+          notebookName: source,
+        };
+        break;
+      }
+    }
 
-    return await this.noteRepository.find({
-      select: {
-        notebook: {
-          name: true,
-        },
-        user: {
-          username: true,
-          displayName: true,
-          thumbnail: true,
-        },
-      },
+    const notes = await this.noteRepository.find({
+      where,
       relations: {
         notebook: true,
         user: true,
       },
-      where: {
-        notebookName: In(joinedNotebooks),
-      },
       take: 5,
       skip,
     });
+
+    return notes;
   }
 
-  async get(id: string) {
+  async getOne(id: string) {
     return await this.noteRepository.findOne({
-      select: {
-        comments: {
-          createdOn: true,
-          content: true,
-          id: true,
-          user: {
-            username: true,
-            displayName: true,
-            thumbnail: true,
-          },
-        },
-        notebook: {
-          name: true,
-          thumbnail: true,
-        },
-        user: {
-          username: true,
-          displayName: true,
-          thumbnail: true,
-        },
-      },
       relations: {
         comments: true,
         notebook: true,

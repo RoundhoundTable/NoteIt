@@ -6,6 +6,7 @@ import {
   OneToOne,
   PrimaryColumn,
 } from "typeorm";
+import { ObjectType, Field } from "type-graphql";
 import { Account } from "./Account";
 import { Membership } from "./Membership";
 import { Note } from "./Note";
@@ -16,34 +17,41 @@ const DEFAULT_IMAGE_URL =
   "https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/profile-pictures%2Fdefault.jpg?alt=media&token=b4d777a9-a23b-4812-a42b-b665b25ee496";
 
 @Entity("user")
+@ObjectType()
 export class User {
-  @PrimaryColumn()
+  @PrimaryColumn({ unique: true })
+  @Field()
   username: string;
 
   @Column({ name: "display_name" })
+  @Field()
   displayName: string;
 
   @Column({ name: "account_id" })
   accountId: string;
 
   @Column({ default: DEFAULT_IMAGE_URL })
+  @Field()
   thumbnail: string;
 
   @OneToOne(() => Account)
   @JoinColumn({ name: "account_id" })
-  account: Promise<Account>;
+  @Field(() => Account, { nullable: true })
+  account: Account;
 
   @OneToMany(() => Note, (note) => note.user)
-  notes: Promise<Note[]>;
+  @Field(() => [Note], { nullable: true })
+  notes: Note[];
 
-  @OneToMany(() => Membership, (membership) => membership.notebook, {
-    onDelete: "CASCADE",
-  })
-  notebooks: Promise<Membership[]>;
+  @OneToMany(() => Membership, (membership) => membership.notebook)
+  @Field(() => [Membership], { nullable: true })
+  notebooks: Membership[];
 
   @OneToMany(() => Vote, (vote) => vote.note)
-  votes: Promise<Vote[]>;
+  @Field(() => [Vote], { nullable: true })
+  votes: Vote[];
 
   @OneToMany(() => Comment, (comment) => comment.note)
-  comments: Promise<Comment[]>;
+  @Field(() => [Comment], { nullable: true })
+  comments: Comment[];
 }
