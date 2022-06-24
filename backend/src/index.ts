@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import "reflect-metadata";
 import { HttpServer } from "./infrastructure/webserver/HttpServer";
 
 dotenv.config();
