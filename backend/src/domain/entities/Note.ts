@@ -17,7 +17,7 @@ import { Comment } from "./Comment";
 @ObjectType()
 export class Note {
   @PrimaryGeneratedColumn("uuid")
-  @Field()
+  @Field(() => String)
   id: string;
 
   @Column({ select: false })
@@ -27,11 +27,11 @@ export class Note {
   notebookName: string;
 
   @Column({ type: "text" })
-  @Field()
+  @Field(() => String)
   content: string;
 
   @Column()
-  @Field()
+  @Field(() => String)
   title: string;
 
   @CreateDateColumn({ name: "created_on" })
@@ -56,9 +56,9 @@ export class Note {
   @Field(() => [Comment], { nullable: true })
   comments?: Comment[];
 
-  @Field({ nullable: true })
+  @Field(() => Boolean)
   likedByUser?: boolean;
 
-  @Field()
+  @Field(() => Number)
   score?: number;
 }
