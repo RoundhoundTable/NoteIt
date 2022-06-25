@@ -7,7 +7,7 @@ import {
   Root,
 } from "type-graphql";
 import { Services } from "../../application/services";
-import { NoteInput, NoteOutput } from "../../application/types/Note";
+import { NoteInput } from "../../application/types/Note";
 import { Entities } from "../../domain/entities";
 import { EFromOptions } from "../../domain/enumerators/EFromOptions";
 
@@ -30,14 +30,14 @@ export class NoteResolver {
     @Arg("source") source: string,
     @Arg("type", { nullable: true }) from: EFromOptions = EFromOptions.FEED,
     @Arg("skip", { nullable: true }) skip: number = 0
-  ): Promise<NoteOutput[]> {
+  ): Promise<Entities.Note[]> {
     const notes = await Services.Note.get(from, source, skip);
 
     return notes;
   }
 
   @Query(() => Entities.Note)
-  async note(@Arg("id") id: string): Promise<NoteOutput> {
+  async note(@Arg("id") id: string): Promise<Entities.Note> {
     const note = await Services.Note.getOne(id);
 
     return note;
