@@ -9,7 +9,6 @@ import { Services } from ".";
 import { Entities } from "../../domain/entities";
 import { EFromOptions } from "../../domain/enumerators/EFromOptions";
 import { InjectRepository } from "../decorators/InjectRepository";
-import { NoteOutput } from "../types/Note";
 
 export class NoteService {
   @InjectRepository(Entities.Note)
@@ -19,7 +18,7 @@ export class NoteService {
     type: EFromOptions,
     source: string,
     skip: number = 0
-  ): Promise<NoteOutput[]> {
+  ): Promise<Entities.Note[]> {
     let where: FindOptionsWhere<Entities.Note>;
 
     switch (type) {
