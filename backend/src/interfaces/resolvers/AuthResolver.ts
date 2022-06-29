@@ -1,7 +1,15 @@
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { Services } from "../../application/services";
 import { Access, LoginForm, RegisterForm } from "../../application/types/Auth";
 import { Entities } from "../../domain/entities";
+import bcrypt from "bcrypt";
+import { sign } from "jsonwebtoken";
+import dotenv from "dotenv";
+import { isAuth } from "../../application/middlewares/isAuth";
+import { ContextPayload } from "../../application/decorators/ContextPayload";
+import { IPayload } from "../../application/interfaces/IPayload";
+
+dotenv.config();
 
 @Resolver()
 export class AuthResolver {
@@ -27,13 +35,37 @@ export class AuthResolver {
   async login(
     @Arg("credentials", { nullable: false }) credentials: LoginForm
   ): Promise<Access> {
+    const account: Entities.Account = await Services.Account.get(
+      credentials.email
+    );
+
+    if (!account) throw new Error("INVALID_CREDENTIALS");
+
+    const valid = await bcrypt.compare(credentials.password, account.password);
+
+    if (!valid) throw new Error("INVALID_CREDENTIALS");
+
+    const username: string = (await Services.User.getByAccount(account.id))
+      .username;
+
+    const accessToken: string = sign(
+      {
+        username,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: "15d",
+      }
+    );
+
     return {
-      accessToken: credentials.email,
+      accessToken,
     };
   }
 
+  @UseMiddleware(isAuth)
   @Mutation(() => Boolean)
-  async deleteAccount(@Arg("accountId") accountId: string) {
-    return (await Services.Account.delete(accountId)) ? true : false;
+  async deleteAccount(@ContextPayload() payload: IPayload) {
+    return (await Services.Account.delete(payload.accountId)) ? true : false;
   }
 }

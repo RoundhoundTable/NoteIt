@@ -1,15 +1,23 @@
-import { Mutation, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import { ContextPayload } from "../../application/decorators/ContextPayload";
+import { IContext } from "../../application/interfaces/IContext";
+import { IPayload } from "../../application/interfaces/IPayload";
+import { isAuth } from "../../application/middlewares/isAuth";
 import { Services } from "../../application/services";
-import { UserSettings } from "../../application/types/User";
+import { Settings } from "../../application/types/User";
 import { Entities } from "../../domain/entities";
 
 @Resolver()
 export class UserResolver {
   @Mutation(() => Entities.User)
-  async updateSettings(payload: UserSettings) {
+  @UseMiddleware(isAuth)
+  async updateSettings(
+    @Arg("settings") settings: Settings,
+    @Ctx() context: IContext
+  ) {
     return await Services.User.update(
-      { ...payload.settings },
-      payload.username
+      { ...settings },
+      context.payload.username
     );
   }
 }

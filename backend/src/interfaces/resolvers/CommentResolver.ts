@@ -1,4 +1,8 @@
-import { Arg, Mutation, Resolver } from "type-graphql";
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import { ContextPayload } from "../../application/decorators/ContextPayload";
+import { IContext } from "../../application/interfaces/IContext";
+import { IPayload } from "../../application/interfaces/IPayload";
+import { isAuth } from "../../application/middlewares/isAuth";
 import { Services } from "../../application/services";
 import { CreateComment } from "../../application/types/Comment";
 import { Entities } from "../../domain/entities";
@@ -6,12 +10,27 @@ import { Entities } from "../../domain/entities";
 @Resolver()
 export class CommentResolver {
   @Mutation(() => Entities.Comment)
-  async createComment(@Arg("comment") comment: CreateComment) {
-    return await Services.Comment.create(comment);
+  @UseMiddleware(isAuth)
+  async createComment(
+    @Arg("comment") comment: CreateComment,
+    @Ctx() context: IContext
+  ) {
+    return await Services.Comment.create({
+      ...comment,
+      username: context.payload.username,
+    });
   }
 
+  //TODO: Get username from context
   @Mutation(() => Boolean)
-  async deleteComment(@Arg("commentId") commentId: string) {
+  @UseMiddleware(isAuth)
+  async deleteComment(
+    @Arg("commentId") commentId: string,
+    @Ctx() context: IContext
+  ) {
+    const comment = await Services.Comment.get(commentId);
+
+    if (comment.username !== context.payload.username) console.error("a");
     return (await Services.Comment.delete(commentId)) ? true : false;
   }
 }

@@ -1,23 +1,31 @@
 import {
   Arg,
+  Ctx,
   FieldResolver,
   Mutation,
   Query,
   Resolver,
   Root,
+  UseMiddleware,
 } from "type-graphql";
 import { Services } from "../../application/services";
 import { NoteInput } from "../../application/types/Note";
 import { Entities } from "../../domain/entities";
-import { EFromOptions } from "../../domain/enumerators/EFromOptions";
+import { EFromOptions } from "../../application/enumerators/EFromOptions";
+import { isAuth } from "../../application/middlewares/isAuth";
+import { ContextPayload } from "../../application/decorators/ContextPayload";
+import { IPayload } from "../../application/interfaces/IPayload";
+import { IContext } from "../../application/interfaces/IContext";
 
 @Resolver(() => Entities.Note)
 export class NoteResolver {
   @FieldResolver(() => Boolean)
-  async likedByUser(@Root() note: Entities.Note): Promise<boolean> {
-    return false
-      ? await Services.Vote.checkUserLike("context.user.username", note.id)
-      : false;
+  @UseMiddleware(isAuth)
+  async likedByUser(
+    @Root() note: Entities.Note,
+    @Ctx() context: IContext
+  ): Promise<boolean> {
+    return await Services.Vote.checkUserLike(context.payload.username, note.id);
   }
 
   @FieldResolver(() => Number)
@@ -44,13 +52,25 @@ export class NoteResolver {
   }
 
   @Mutation(() => String)
-  async createNote(@Arg("payload") payload: NoteInput): Promise<string> {
-    const note = await Services.Note.create(payload);
+  @UseMiddleware(isAuth)
+  async createNote(
+    @Arg("content") content: NoteInput,
+    @Ctx() context: IContext
+  ): Promise<string> {
+    const note = await Services.Note.create({
+      ...content,
+      username: context.payload.username,
+    });
     return note.id;
   }
 
   @Mutation(() => String)
-  async deleteNote(@Arg("noteId") noteId: string) {
+  @UseMiddleware(isAuth)
+  async deleteNote(@Arg("noteId") noteId: string, @Ctx() context: IContext) {
+    const note = await Services.Note.getOne(noteId);
+
+    if (note.username !== context.payload.username) console.error("err");
+
     await Services.Note.delete(noteId);
     return null;
   }
