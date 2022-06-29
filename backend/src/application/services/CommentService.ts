@@ -16,4 +16,12 @@ export class CommentService {
   async delete(id: string) {
     return await this.commentRepository.delete(id);
   }
+
+  async get(id: string) {
+    return await this.commentRepository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
 }
