@@ -43,4 +43,15 @@ export class MembershipService {
 
     return await this.membershipRepository.update(criteria, { role });
   }
+
+  async getUserRole(username: string, notebook: string): Promise<ERoles> {
+    return (
+      await this.membershipRepository.findOne({
+        where: {
+          username,
+          notebookName: notebook,
+        },
+      })
+    ).role;
+  }
 }
