@@ -1,7 +1,11 @@
-import { DeleteResult, FindOptionsWhere, Repository } from "typeorm";
+import {
+  DeepPartial,
+  DeleteResult,
+  FindOptionsWhere,
+  Repository,
+} from "typeorm";
 import { Entities } from "../../domain/entities";
 import { InjectRepository } from "../decorators/InjectRepository";
-import { CreateVote, DeleteVote } from "../types/Vote";
 
 export class VoteService {
   @InjectRepository(Entities.Vote)
@@ -18,13 +22,13 @@ export class VoteService {
     return vote ? true : false;
   }
 
-  async create(payload: CreateVote): Promise<Entities.Vote> {
+  async create(payload: DeepPartial<Entities.Vote>): Promise<Entities.Vote> {
     const vote: Entities.Vote = this.voteRepository.create(payload);
 
     return await this.voteRepository.save(vote);
   }
 
-  async delete(payload: DeleteVote): Promise<DeleteResult> {
+  async delete(payload: DeepPartial<Entities.Vote>): Promise<DeleteResult> {
     return await this.voteRepository.delete(<FindOptionsWhere<Entities.Vote>>{
       ...payload,
     });
