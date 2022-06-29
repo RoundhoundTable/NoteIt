@@ -24,4 +24,12 @@ export class UserService {
       payload
     );
   }
+
+  async getByAccount(accountId: string) {
+    return await this.userRepository.findOne({
+      where: {
+        accountId,
+      },
+    });
+  }
 }
