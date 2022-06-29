@@ -6,8 +6,8 @@ import {
   UploadResult,
   uploadString,
 } from "firebase/storage";
-import { EFileStringFormat } from "../domain/enumerators/EFileStringFormat";
-import { IFile } from "../domain/interfaces/IFile";
+import { EFileStringFormat } from "./enumerators/EFileStringFormat";
+import { IFile } from "./interfaces/IFile";
 import { app } from "../infrastructure/cloud/firebase";
 
 class CloudStorage {
