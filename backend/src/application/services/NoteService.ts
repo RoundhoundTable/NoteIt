@@ -7,7 +7,7 @@ import {
 } from "typeorm";
 import { Services } from ".";
 import { Entities } from "../../domain/entities";
-import { EFromOptions } from "../../domain/enumerators/EFromOptions";
+import { EFromOptions } from "../enumerators/EFromOptions";
 import { InjectRepository } from "../decorators/InjectRepository";
 
 export class NoteService {
