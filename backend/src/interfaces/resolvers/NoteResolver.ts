@@ -13,7 +13,6 @@ import { NoteInput } from "../../application/types/Note";
 import { Entities } from "../../domain/entities";
 import { EFromOptions } from "../../application/enumerators/EFromOptions";
 import { isAuth } from "../../application/middlewares/isAuth";
-import { ContextPayload } from "../../application/decorators/ContextPayload";
 import { IPayload } from "../../application/interfaces/IPayload";
 import { IContext } from "../../application/interfaces/IContext";
 

@@ -1,7 +1,5 @@
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
-import { ContextPayload } from "../../application/decorators/ContextPayload";
 import { IContext } from "../../application/interfaces/IContext";
-import { IPayload } from "../../application/interfaces/IPayload";
 import { isAuth } from "../../application/middlewares/isAuth";
 import { Services } from "../../application/services";
 import { CreateNotebook } from "../../application/types/Notebook";

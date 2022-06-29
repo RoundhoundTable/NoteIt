@@ -1,4 +1,4 @@
-import { Arg, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { Services } from "../../application/services";
 import { Access, LoginForm, RegisterForm } from "../../application/types/Auth";
 import { Entities } from "../../domain/entities";
@@ -6,8 +6,8 @@ import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { isAuth } from "../../application/middlewares/isAuth";
-import { ContextPayload } from "../../application/decorators/ContextPayload";
 import { IPayload } from "../../application/interfaces/IPayload";
+import { IContext } from "../../application/interfaces/IContext";
 
 dotenv.config();
 
@@ -63,9 +63,11 @@ export class AuthResolver {
     };
   }
 
-  @UseMiddleware(isAuth)
   @Mutation(() => Boolean)
-  async deleteAccount(@ContextPayload() payload: IPayload) {
-    return (await Services.Account.delete(payload.accountId)) ? true : false;
+  @UseMiddleware(isAuth)
+  async deleteAccount(@Ctx() context: IContext) {
+    return (await Services.Account.delete(context.payload.accountId))
+      ? true
+      : false;
   }
 }
