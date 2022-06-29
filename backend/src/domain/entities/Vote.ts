@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
-import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { Note } from "./Note";
 import { User } from "./User";
 
@@ -7,10 +7,16 @@ import { User } from "./User";
 @ObjectType()
 export class Vote {
   @PrimaryColumn()
+  @Field()
   username: string;
 
   @PrimaryColumn({ name: "note_id" })
+  @Field()
   noteId: string;
+
+  @Column()
+  @Field()
+  value: number;
 
   @ManyToOne(() => User, (user) => user.votes)
   @JoinColumn({ name: "username" })
