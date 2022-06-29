@@ -10,6 +10,7 @@ import { MembershipResolver } from "../../interfaces/resolvers/MembershipResolve
 import { NotebookResolver } from "../../interfaces/resolvers/NotebookResolver";
 import { CommentResolver } from "../../interfaces/resolvers/CommentResolver";
 import { UserResolver } from "../../interfaces/resolvers/UserResolver";
+import { GraphQLError } from "graphql";
 
 export class HttpServer {
   private port: number | string;
@@ -31,7 +32,7 @@ export class HttpServer {
 
   async bootstrap() {
     try {
-      const graphql = graphqlHTTP({
+      const graphql = graphqlHTTP(async (req, res) => ({
         schema: await buildSchema({
           resolvers: [
             AuthResolver,
@@ -43,12 +44,12 @@ export class HttpServer {
             UserResolver,
           ],
         }),
-        context: ({ req, res }) => ({
+        context: {
           req,
           res,
-        }),
+        },
         graphiql: true,
-      });
+      }));
 
       await AppDataSource.initialize();
       this.app.use("/graphql", graphql);
