@@ -23,10 +23,15 @@ interface IMockResponse {
   };
 }
 
-export const GetMockNotes = (): Promise<IMockResponse> => {
+export const GetMockNotes = (skip = 0): Promise<IMockResponse> => {
   return new Promise((resolve, reject) => {
     try {
-      resolve(mockNotes);
+      const notes = mockNotes.data.notes.slice(skip, skip + 5);
+      resolve({
+        data: {
+          notes,
+        },
+      });
     } catch (err) {
       reject(err);
     }
