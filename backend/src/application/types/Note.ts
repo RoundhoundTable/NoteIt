@@ -9,8 +9,5 @@ export class NoteInput {
   title: string;
 
   @Field({ nullable: false })
-  username: string;
-
-  @Field({ nullable: false })
   notebookName: string;
 }
