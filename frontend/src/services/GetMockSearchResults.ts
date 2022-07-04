@@ -2,12 +2,14 @@ import mockUserResult from "../resources/mockUserSearchResult.json";
 import mockNotebookResult from "../resources/mockNotebookSearchResult.json";
 
 export interface IUserResult {
+  __typename: string;
   username: string;
   displayName: string;
   thumbnail: string;
 }
 
 export interface INotebookResult {
+  __typename: string;
   name: string;
   thumbnail: string;
   description: string;
@@ -22,9 +24,6 @@ interface IMockResponse {
       | (IUserResult | INotebookResult)[];
   };
 }
-
-export const isAnUser = (obj: any): obj is IUserResult => "username" in obj;
-export const isANotebook = (obj: any): obj is INotebookResult => "name" in obj;
 
 export const GetMockSearchResults = (
   query: string
@@ -69,7 +68,7 @@ export const GetMockSearchResults = (
           });
         }
 
-        result = result.slice(0, 6);
+        if (result.length > 6) result = result.slice(0, 6);
       } else {
         const users: IUserResult[] = mockUserResult.data.search
           .filter((result: IUserResult) => result.username.startsWith(query))
