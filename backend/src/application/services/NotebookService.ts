@@ -1,4 +1,4 @@
-import { DeepPartial, Repository } from "typeorm";
+import { DeepPartial, Like, Repository } from "typeorm";
 import { Entities } from "../../domain/entities";
 import { InjectRepository } from "../decorators/InjectRepository";
 
@@ -21,5 +21,18 @@ export class NotebookService {
 
   async update(payload: DeepPartial<Entities.Notebook>, notebook: string) {
     return await this.notebookRepository.update(notebook, payload);
+  }
+
+  async search(notebook: string, skip?: number, take?: number) {
+    return await this.notebookRepository.find({
+      where: {
+        name: Like(`%${notebook}%`),
+      },
+      take,
+      skip,
+      order: {
+        name: "DESC",
+      },
+    });
   }
 }
