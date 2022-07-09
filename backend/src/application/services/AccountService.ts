@@ -8,6 +8,7 @@ import {
 import { Entities } from "../../domain/entities";
 import { InjectRepository } from "../decorators/InjectRepository";
 import bcrypt from "bcrypt";
+import { ClientError } from "../ClientError";
 
 export class AccountService {
   @InjectRepository(Entities.Account)
@@ -16,6 +17,15 @@ export class AccountService {
   async create(
     payload: DeepPartial<Entities.Account>
   ): Promise<Entities.Account> {
+    if (
+      await this.accountRepository.findOne({
+        where: {
+          email: payload.email,
+        },
+      })
+    )
+      throw new ClientError("Email already in use");
+
     let account: Entities.Account = this.accountRepository.create({
       ...payload,
     });
