@@ -31,4 +31,10 @@ export class Notebook {
   @OneToMany(() => Membership, (membership) => membership.user)
   @Field((type) => [Membership, { nullable: true }])
   members: Membership[];
+
+  @Field({ defaultValue: false })
+  joinedByUser: boolean;
+
+  @Field({ defaultValue: 0 })
+  memberCount: number;
 }
