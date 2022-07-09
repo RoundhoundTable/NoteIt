@@ -12,6 +12,7 @@ import { Membership } from "./Membership";
 import { Note } from "./Note";
 import { Vote } from "./Vote";
 import { Comment } from "./Comment";
+import { Length } from "class-validator";
 
 const DEFAULT_IMAGE_URL =
   "https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/profile-pictures%2Fdefault.jpg?alt=media&token=b4d777a9-a23b-4812-a42b-b665b25ee496";
@@ -20,10 +21,12 @@ const DEFAULT_IMAGE_URL =
 @ObjectType()
 export class User {
   @PrimaryColumn({ unique: true })
+  @Length(1, 20)
   @Field()
   username: string;
 
   @Column({ name: "display_name" })
+  @Length(1, 20)
   @Field()
   displayName: string;
 
