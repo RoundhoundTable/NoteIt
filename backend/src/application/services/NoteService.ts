@@ -22,17 +22,7 @@ export class NoteService {
     let where: FindOptionsWhere<Entities.Note>;
 
     switch (type) {
-      case EFromOptions.FEED: {
-        const joinedNotebooks: string[] = (
-          await Services.Membership.getUserMembership(source)
-        ).map((membership) => membership.notebookName);
-
-        where = {
-          notebookName: In(joinedNotebooks),
-        };
-        break;
-      }
-      case EFromOptions.USER: {
+      case EFromOptions.PROFILE: {
         where = {
           username: source,
         };
@@ -48,6 +38,26 @@ export class NoteService {
 
     const notes = await this.noteRepository.find({
       where,
+      relations: {
+        notebook: true,
+        user: true,
+      },
+      take: 5,
+      skip,
+    });
+
+    return notes;
+  }
+
+  async getFeed(username: string, skip: number = 0) {
+    const joinedNotebooks: string[] = (
+      await Services.Membership.getUserMembership(username)
+    ).map((membership) => membership.notebookName);
+
+    const notes = await this.noteRepository.find({
+      where: {
+        notebookName: In(joinedNotebooks),
+      },
       relations: {
         notebook: true,
         user: true,
