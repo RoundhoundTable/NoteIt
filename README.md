@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="NoteIt lOGO" src="https://raw.githubusercontent.com/RoundhoundTable/NoteIt/master/docs/Logo.jpg">
+  <img alt="NoteIt Logo" src="https://raw.githubusercontent.com/RoundhoundTable/NoteIt/master/docs/Logo.jpg">
   <img alt="MySQL" src="https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white" class="icon"/>
   <img alt="TypeORM" src="https://img.shields.io/badge/typeorm-%2300f.svg?style=for-the-badge" class="icon"/>
   <img alt="TypeGraphQL" src="https://img.shields.io/badge/-TypeGraphQL-%23C04392?style=for-the-badge" class="icon"/>
