@@ -1,12 +1,27 @@
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  FieldResolver,
+  Mutation,
+  Resolver,
+  Root,
+  UseMiddleware,
+} from "type-graphql";
+import { ClientError } from "../../application/ClientError";
 import { IContext } from "../../application/interfaces/IContext";
 import { isAuth } from "../../application/middlewares/isAuth";
 import { Services } from "../../application/services";
 import { ChangeRole } from "../../application/types/Membership";
+import { Entities } from "../../domain/entities";
 import { ERoles } from "../../domain/enumerators/ERoles";
 
-@Resolver()
+@Resolver(() => Entities.Membership)
 export class MembershipResolver {
+  @FieldResolver(() => Number)
+  async memberCount(@Root() notebook: Entities.Notebook): Promise<number> {
+    return await Services.Membership.count(notebook.name);
+  }
+
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async joinNotebook(
@@ -32,7 +47,8 @@ export class MembershipResolver {
       membershipPayload.notebookName
     );
 
-    if (role !== ERoles.OWNER) console.error("error");
+    if (role !== ERoles.OWNER)
+      throw new ClientError("Only the owner can change an user role");
 
     return (await Services.Membership.changeRole(
       membershipPayload.username,
