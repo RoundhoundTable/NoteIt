@@ -15,27 +15,28 @@ import { EFromOptions } from "../../application/enumerators/EFromOptions";
 import { isAuth } from "../../application/middlewares/isAuth";
 import { IPayload } from "../../application/interfaces/IPayload";
 import { IContext } from "../../application/interfaces/IContext";
+import { ClientError } from "../../application/ClientError";
 
 @Resolver(() => Entities.Note)
 export class NoteResolver {
-  @FieldResolver(() => Boolean)
+  @FieldResolver(() => Number)
   @UseMiddleware(isAuth)
   async likedByUser(
     @Root() note: Entities.Note,
     @Ctx() context: IContext
-  ): Promise<boolean> {
+  ): Promise<number> {
     return await Services.Vote.checkUserLike(context.payload.username, note.id);
   }
 
   @FieldResolver(() => Number)
   async score(@Root() note: Entities.Note): Promise<number> {
-    return await Services.Vote.count(note.id);
+    return await Services.Vote.getScore(note.id);
   }
 
   @Query(() => [Entities.Note])
   async notes(
     @Arg("source") source: string,
-    @Arg("type", { nullable: true }) from: EFromOptions = EFromOptions.FEED,
+    @Arg("type") from: EFromOptions,
     @Arg("skip", { nullable: true }) skip: number = 0
   ): Promise<Entities.Note[]> {
     const notes = await Services.Note.get(from, source, skip);
@@ -48,6 +49,17 @@ export class NoteResolver {
     const note = await Services.Note.getOne(id);
 
     return note;
+  }
+
+  @Query(() => [Entities.Note])
+  @UseMiddleware(isAuth)
+  async getFeed(
+    @Arg("skip", { nullable: true }) skip: number = 0,
+    @Ctx() context: IContext
+  ): Promise<Entities.Note[]> {
+    const notes = await Services.Note.getFeed(context.payload.username, skip);
+
+    return notes;
   }
 
   @Mutation(() => String)
@@ -68,7 +80,8 @@ export class NoteResolver {
   async deleteNote(@Arg("noteId") noteId: string, @Ctx() context: IContext) {
     const note = await Services.Note.getOne(noteId);
 
-    if (note.username !== context.payload.username) console.error("err");
+    if (note.username !== context.payload.username)
+      throw new ClientError("Only the owner can delete a note");
 
     await Services.Note.delete(noteId);
     return null;
