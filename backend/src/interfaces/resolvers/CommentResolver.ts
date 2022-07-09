@@ -1,11 +1,12 @@
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
+import { ClientError } from "../../application/ClientError";
 import { IContext } from "../../application/interfaces/IContext";
 import { isAuth } from "../../application/middlewares/isAuth";
 import { Services } from "../../application/services";
 import { CreateComment } from "../../application/types/Comment";
 import { Entities } from "../../domain/entities";
 
-@Resolver()
+@Resolver(() => Entities.Comment)
 export class CommentResolver {
   @Mutation(() => Entities.Comment)
   @UseMiddleware(isAuth)
@@ -19,7 +20,6 @@ export class CommentResolver {
     });
   }
 
-  //TODO: Get username from context
   @Mutation(() => Boolean)
   @UseMiddleware(isAuth)
   async deleteComment(
@@ -28,7 +28,8 @@ export class CommentResolver {
   ) {
     const comment = await Services.Comment.get(commentId);
 
-    if (comment.username !== context.payload.username) console.error("a");
+    if (comment.username !== context.payload.username)
+      throw new ClientError("Only the owner can delete a comment");
     return (await Services.Comment.delete(commentId)) ? true : false;
   }
 }
