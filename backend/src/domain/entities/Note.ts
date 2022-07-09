@@ -56,8 +56,8 @@ export class Note {
   @Field(() => [Comment], { nullable: true })
   comments?: Comment[];
 
-  @Field(() => Boolean, { defaultValue: false })
-  likedByUser?: boolean;
+  @Field(() => Number, { defaultValue: 0 })
+  likedByUser?: number;
 
   @Field(() => Number)
   score?: number;
