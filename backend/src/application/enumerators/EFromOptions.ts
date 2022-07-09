@@ -1,9 +1,8 @@
 import { registerEnumType } from "type-graphql";
 
 export enum EFromOptions {
-  USER = "USER",
+  PROFILE = "PROFILE",
   NOTEBOOK = "NOTEBOOK",
-  FEED = "FEED",
 }
 
 registerEnumType(EFromOptions, {
