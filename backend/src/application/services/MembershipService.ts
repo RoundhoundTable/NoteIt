@@ -54,4 +54,12 @@ export class MembershipService {
       })
     ).role;
   }
+
+  async count(notebook: string): Promise<number> {
+    return await this.membershipRepository.count({
+      where: {
+        notebookName: notebook,
+      },
+    });
+  }
 }
