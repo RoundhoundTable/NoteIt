@@ -11,6 +11,9 @@ import { NotebookResolver } from "../../interfaces/resolvers/NotebookResolver";
 import { CommentResolver } from "../../interfaces/resolvers/CommentResolver";
 import { UserResolver } from "../../interfaces/resolvers/UserResolver";
 import { GraphQLError } from "graphql";
+import { v4 } from "uuid";
+import { ClientError } from "../../application/ClientError";
+import { GeneralResolver } from "../../interfaces/resolvers/GeneralResolver";
 
 export class HttpServer {
   private port: number | string;
@@ -42,6 +45,7 @@ export class HttpServer {
             NotebookResolver,
             CommentResolver,
             UserResolver,
+            GeneralResolver,
           ],
         }),
         context: {
@@ -49,6 +53,22 @@ export class HttpServer {
           res,
         },
         graphiql: true,
+        customFormatErrorFn(error: GraphQLError) {
+          if (error.originalError instanceof ClientError) return error;
+
+          const errorId = v4();
+          console.error({
+            error: {
+              id: errorId,
+              name: error.name,
+              message: error.message,
+              path: error.path,
+              stack: error.stack,
+            },
+          });
+
+          return new GraphQLError(`Internal Error: ${errorId}`);
+        },
       }));
 
       await AppDataSource.initialize();
