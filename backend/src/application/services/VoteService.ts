@@ -11,7 +11,7 @@ export class VoteService {
   @InjectRepository(Entities.Vote)
   private readonly voteRepository: Repository<Entities.Vote>;
 
-  async checkUserLike(username: string, noteId: string): Promise<boolean> {
+  async checkUserLike(username: string, noteId: string): Promise<number> {
     const vote: Entities.Vote = await this.voteRepository.findOne({
       where: {
         username,
@@ -19,7 +19,7 @@ export class VoteService {
       },
     });
 
-    return vote ? true : false;
+    return vote ? vote.value : 0;
   }
 
   async create(payload: DeepPartial<Entities.Vote>): Promise<Entities.Vote> {
@@ -34,11 +34,13 @@ export class VoteService {
     });
   }
 
-  async count(noteId: string): Promise<number> {
-    return await this.voteRepository.count({
-      where: {
-        noteId,
-      },
-    });
+  async getScore(noteId: string): Promise<number> {
+    const { score } = await this.voteRepository
+      .createQueryBuilder()
+      .select("SUM(vote.value)", "score")
+      .where("note_id = :noteId", { noteId })
+      .getRawOne();
+
+    return score;
   }
 }
