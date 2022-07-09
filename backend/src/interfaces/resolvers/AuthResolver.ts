@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import { isAuth } from "../../application/middlewares/isAuth";
 import { IPayload } from "../../application/interfaces/IPayload";
 import { IContext } from "../../application/interfaces/IContext";
+import { ClientError } from "../../application/ClientError";
 
 dotenv.config();
 
@@ -17,10 +18,14 @@ export class AuthResolver {
   async register(
     @Arg("form", { nullable: false }) form: RegisterForm
   ): Promise<Entities.User> {
+    if (await Services.User.getByUsername(form.username))
+      throw new ClientError("Username already in use");
+
     const account: Entities.Account = await Services.Account.create({
       email: form.email,
       password: form.password,
     });
+
     const user: Entities.User = await Services.User.create({
       accountId: account.id,
       username: form.username,
@@ -39,14 +44,13 @@ export class AuthResolver {
       credentials.email
     );
 
-    if (!account) throw new Error("INVALID_CREDENTIALS");
+    if (!account) throw new ClientError("Account doesn't exist");
 
     const valid = await bcrypt.compare(credentials.password, account.password);
 
-    if (!valid) throw new Error("INVALID_CREDENTIALS");
+    if (!valid) throw new ClientError("Invalid Credentials");
 
-    const username: string = (await Services.User.getByAccount(account.id))
-      .username;
+    const { username } = await Services.User.getByAccount(account.id);
 
     const accessToken: string = sign(
       {
