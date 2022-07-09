@@ -1,4 +1,4 @@
-import { DeepPartial, FindOptionsWhere, Repository } from "typeorm";
+import { DeepPartial, FindOptionsWhere, Like, Raw, Repository } from "typeorm";
 import { Entities } from "../../domain/entities";
 import { InjectRepository } from "../decorators/InjectRepository";
 
@@ -15,13 +15,9 @@ export class UserService {
   }
 
   async update(payload: DeepPartial<Entities.User>, username: string) {
-    return await this.userRepository.update(
-      <FindOptionsWhere<Entities.User>>{
-        where: {
-          username,
-        },
-      },
-      payload
+    return await this.userRepository.query(
+      `UPDATE user SET thumbnail = COALESCE(?, thumbnail), display_name = COALESCE(?, display_name) WHERE username = ?`,
+      [payload.thumbnail, payload.displayName, username]
     );
   }
 
@@ -29,6 +25,27 @@ export class UserService {
     return await this.userRepository.findOne({
       where: {
         accountId,
+      },
+    });
+  }
+
+  async getByUsername(username: string) {
+    return await this.userRepository.findOne({
+      where: {
+        username,
+      },
+    });
+  }
+
+  async search(username: string, skip?: number, take?: number) {
+    return await this.userRepository.find({
+      where: {
+        username: Like(`%${username}%`),
+      },
+      take,
+      skip,
+      order: {
+        username: "DESC",
       },
     });
   }
