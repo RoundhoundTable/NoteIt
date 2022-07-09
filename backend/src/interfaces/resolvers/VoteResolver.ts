@@ -6,7 +6,7 @@ import { Services } from "../../application/services";
 import { CreateVote } from "../../application/types/Vote";
 import { Entities } from "../../domain/entities";
 
-@Resolver()
+@Resolver(() => Entities.Vote)
 export class VoteResolver {
   @Mutation(() => Number)
   @UseMiddleware(isAuth)
@@ -19,17 +19,6 @@ export class VoteResolver {
       username: context.payload.username,
     });
 
-    return await Services.Vote.count(votePayload.noteId);
-  }
-
-  @Mutation(() => Number)
-  @UseMiddleware(isAuth)
-  async unvote(
-    @Arg("noteId") noteId: string,
-    @Ctx() context: IContext
-  ): Promise<number> {
-    await Services.Vote.delete({ noteId, username: context.payload.username });
-
-    return await Services.Vote.count(noteId);
+    return await Services.Vote.getScore(votePayload.noteId);
   }
 }
