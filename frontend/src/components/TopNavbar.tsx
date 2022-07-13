@@ -12,10 +12,10 @@ export const TopNavbar = () => {
   });
   
   return (
-    <nav className="sticky w-full flex flex-row justify-around py-2 shadow-xl shadow-primary-500/10 bg-white">
+    <nav className="sticky top-0 w-full flex flex-row justify-around py-2 shadow-xl shadow-primary-500/10 bg-white">
       {width >= 768 && <Search />}
       <Logo className="h-11"/>
-      {width >= 768 && <Actions className="flex-row align-middle hidden md:flex justify-between w-64"/>}
+      {width >= 768 && <Actions className="flex flex-row align-middle justify-between"/>}
     </nav>
   );
 };
