@@ -8,6 +8,7 @@ import { MainPage } from "./pages/MainPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { NotePage } from "./pages/NotePage";
+import { SettingsPage } from "./pages/SettingsPage";
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/u/:username" element={<ProfilePage/>}/>
           <Route path="*" element={<ErrorPage/>}/>
           <Route path="/n/:noteid" element={<NotePage/>} />
+          <Route path="/account/settings" element={<SettingsPage/>}/>
         </Route>
         <Route element={<AccountLayout/>}>
           <Route path="/account/login" element={<LoginPage/>}/>
