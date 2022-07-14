@@ -1,4 +1,4 @@
-import { Search } from "./Search";
+import { Searchbar } from "./Searchbar";
 import { Logo } from "./Logo";
 import { Actions } from "./Actions";
 import { useEffect, useState } from "react";
@@ -12,10 +12,10 @@ export const TopNavbar = () => {
   });
   
   return (
-    <nav className="sticky top-0 w-full flex flex-row justify-around py-2 shadow-xl shadow-primary-500/10 bg-white">
-      {width >= 768 && <Search />}
+    <nav className="sticky w-full flex flex-row justify-around py-2 shadow-xl shadow-primary-500/10 bg-white">
+      {width >= 768 && <Searchbar />}
       <Logo className="h-11"/>
-      {width >= 768 && <Actions className="flex flex-row align-middle justify-between"/>}
+      {width >= 768 && <Actions className="flex-row align-middle hidden md:flex justify-between w-64"/>}
     </nav>
   );
 };
