@@ -13,9 +13,8 @@ import { NoteInput } from "../../application/types/Note";
 import { Entities } from "../../domain/entities";
 import { EFromOptions } from "../../application/enumerators/EFromOptions";
 import { isAuth } from "../../application/middlewares/isAuth";
-import { IPayload } from "../../application/interfaces/IPayload";
 import { IContext } from "../../application/interfaces/IContext";
-import { ClientError } from "../../application/ClientError";
+import { GraphQLError } from "graphql";
 
 @Resolver(() => Entities.Note)
 export class NoteResolver {
@@ -25,21 +24,24 @@ export class NoteResolver {
     @Root() note: Entities.Note,
     @Ctx() context: IContext
   ): Promise<number> {
-    return await Services.Vote.checkUserLike(context.payload.username, note.id);
+    return context.payload
+      ? await Services.Vote.checkUserLike(context.payload.username, note.id)
+      : 0;
   }
 
   @FieldResolver(() => Number)
   async score(@Root() note: Entities.Note): Promise<number> {
-    return await Services.Vote.getScore(note.id);
+    const score = await Services.Vote.getScore(note.id);
+    return score ? score : 0;
   }
 
   @Query(() => [Entities.Note])
   async notes(
     @Arg("source") source: string,
     @Arg("type") from: EFromOptions,
-    @Arg("skip", { nullable: true }) skip: number = 0
+    @Arg("offset", { nullable: true }) offset: number = 0
   ): Promise<Entities.Note[]> {
-    const notes = await Services.Note.get(from, source, skip);
+    const notes = await Services.Note.get(from, source, offset);
 
     return notes;
   }
@@ -53,11 +55,11 @@ export class NoteResolver {
 
   @Query(() => [Entities.Note])
   @UseMiddleware(isAuth)
-  async getFeed(
-    @Arg("skip", { nullable: true }) skip: number = 0,
+  async feed(
+    @Arg("offset", { nullable: true }) offset: number = 0,
     @Ctx() context: IContext
   ): Promise<Entities.Note[]> {
-    const notes = await Services.Note.getFeed(context.payload.username, skip);
+    const notes = await Services.Note.getFeed(context.payload.username, offset);
 
     return notes;
   }
@@ -75,13 +77,13 @@ export class NoteResolver {
     return note.id;
   }
 
-  @Mutation(() => String)
+  @Mutation(() => String, { nullable: true })
   @UseMiddleware(isAuth)
   async deleteNote(@Arg("noteId") noteId: string, @Ctx() context: IContext) {
     const note = await Services.Note.getOne(noteId);
 
     if (note.username !== context.payload.username)
-      throw new ClientError("Only the owner can delete a note");
+      throw new GraphQLError("Only the owner can delete a note");
 
     await Services.Note.delete(noteId);
     return null;
