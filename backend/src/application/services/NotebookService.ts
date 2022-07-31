@@ -23,10 +23,18 @@ export class NotebookService {
     return await this.notebookRepository.update(notebook, payload);
   }
 
+  async get(notebook: string) {
+    return await this.notebookRepository.findOne({
+      where: {
+        name: notebook,
+      },
+    });
+  }
+
   async search(notebook: string, skip?: number, take?: number) {
     return await this.notebookRepository.find({
       where: {
-        name: Like(`%${notebook}%`),
+        name: Like(`${notebook}%`),
       },
       take,
       skip,
