@@ -4,19 +4,20 @@ import {
   Field,
   Mutation,
   ObjectType,
+  Query,
   Resolver,
   UseMiddleware,
 } from "type-graphql";
 import CloudStorage from "../../application/CloudStorage";
 import { IContext } from "../../application/interfaces/IContext";
 import { IFile } from "../../application/interfaces/IFile";
-import { IPayload } from "../../application/interfaces/IPayload";
 import { isAuth } from "../../application/middlewares/isAuth";
 import { Services } from "../../application/services";
 import { Settings } from "../../application/types/User";
 import { Entities } from "../../domain/entities";
 import { v4 } from "uuid";
 import { EFileStringFormat } from "../../application/enumerators/EFileStringFormat";
+import { GraphQLError } from "graphql";
 
 @ObjectType()
 class UpdateSettingsResponse {
@@ -55,5 +56,20 @@ export class UserResolver {
       context.payload.username
     );
     return { displayName: settings.displayName };
+  }
+
+  @Query(() => Entities.User)
+  @UseMiddleware(isAuth)
+  async getCurrentUser(@Ctx() context: IContext) {
+    return await Services.User.getByUsername(context.payload.username);
+  }
+
+  @Query(() => Entities.User, { nullable: true })
+  async getUser(@Arg("username") username: string) {
+    const user = await Services.User.getByUsername(username);
+
+    if (!user) throw new GraphQLError("User not found");
+
+    return user;
   }
 }
