@@ -1,4 +1,4 @@
-import { DeepPartial, FindOptionsWhere, Like, Raw, Repository } from "typeorm";
+import { DeepPartial, Like, Repository } from "typeorm";
 import { Entities } from "../../domain/entities";
 import { InjectRepository } from "../decorators/InjectRepository";
 
@@ -40,7 +40,7 @@ export class UserService {
   async search(username: string, skip?: number, take?: number) {
     return await this.userRepository.find({
       where: {
-        username: Like(`%${username}%`),
+        username: Like(`${username}%`),
       },
       take,
       skip,
