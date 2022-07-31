@@ -24,6 +24,10 @@ export class Notebook {
   @Field()
   createdOn: Date;
 
+  @Column()
+  @Field()
+  description: string;
+
   @OneToMany(() => Note, (note) => note.notebook)
   @Field((type) => [Note], { nullable: true })
   notes: Note[];
