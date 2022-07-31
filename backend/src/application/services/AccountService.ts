@@ -8,7 +8,7 @@ import {
 import { Entities } from "../../domain/entities";
 import { InjectRepository } from "../decorators/InjectRepository";
 import bcrypt from "bcrypt";
-import { ClientError } from "../ClientError";
+import { GraphQLError } from "graphql";
 
 export class AccountService {
   @InjectRepository(Entities.Account)
@@ -24,7 +24,7 @@ export class AccountService {
         },
       })
     )
-      throw new ClientError("Email already in use");
+      throw new GraphQLError("Email already in use");
 
     let account: Entities.Account = this.accountRepository.create({
       ...payload,
@@ -35,7 +35,15 @@ export class AccountService {
     return await this.accountRepository.save(account);
   }
 
-  async get(email: string): Promise<Entities.Account> {
+  async get(id: string): Promise<Entities.Account> {
+    return await this.accountRepository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async getByEmail(email: string): Promise<Entities.Account> {
     return await this.accountRepository.findOne({
       where: {
         email,
