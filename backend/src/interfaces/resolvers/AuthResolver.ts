@@ -6,20 +6,19 @@ import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import dotenv from "dotenv";
 import { isAuth } from "../../application/middlewares/isAuth";
-import { IPayload } from "../../application/interfaces/IPayload";
 import { IContext } from "../../application/interfaces/IContext";
-import { ClientError } from "../../application/ClientError";
+import { GraphQLError } from "graphql";
 
 dotenv.config();
 
 @Resolver()
 export class AuthResolver {
-  @Mutation(() => Entities.User)
+  @Mutation(() => Entities.User, { nullable: true })
   async register(
     @Arg("form", { nullable: false }) form: RegisterForm
   ): Promise<Entities.User> {
     if (await Services.User.getByUsername(form.username))
-      throw new ClientError("Username already in use");
+      throw new GraphQLError("Username already in use");
 
     const account: Entities.Account = await Services.Account.create({
       email: form.email,
@@ -36,19 +35,19 @@ export class AuthResolver {
     return user;
   }
 
-  @Mutation(() => Access)
+  @Mutation(() => Access, { nullable: true })
   async login(
     @Arg("credentials", { nullable: false }) credentials: LoginForm
   ): Promise<Access> {
-    const account: Entities.Account = await Services.Account.get(
+    const account: Entities.Account = await Services.Account.getByEmail(
       credentials.email
     );
 
-    if (!account) throw new ClientError("Account doesn't exist");
+    if (!account) throw new GraphQLError("Account doesn't exist");
 
     const valid = await bcrypt.compare(credentials.password, account.password);
 
-    if (!valid) throw new ClientError("Invalid Credentials");
+    if (!valid) throw new GraphQLError("Invalid Credentials");
 
     const { username } = await Services.User.getByAccount(account.id);
 
