@@ -12,7 +12,6 @@ import { CommentResolver } from "../../interfaces/resolvers/CommentResolver";
 import { UserResolver } from "../../interfaces/resolvers/UserResolver";
 import { GraphQLError } from "graphql";
 import { v4 } from "uuid";
-import { ClientError } from "../../application/ClientError";
 import { GeneralResolver } from "../../interfaces/resolvers/GeneralResolver";
 
 export class HttpServer {
@@ -21,8 +20,8 @@ export class HttpServer {
 
   constructor() {
     const corsOptions: CorsOptions = {
-      credentials: true,
       origin: "*",
+      credentials: true,
     };
 
     this.port = process.env.HTTP_SERVER_PORT || 3000;
@@ -54,7 +53,7 @@ export class HttpServer {
         },
         graphiql: true,
         customFormatErrorFn(error: GraphQLError) {
-          if (error.originalError instanceof ClientError) return error;
+          if (error.originalError instanceof GraphQLError) return error;
 
           const errorId = v4();
           console.error({
