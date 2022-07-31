@@ -53,12 +53,11 @@ export class Note {
   votes?: Vote[];
 
   @OneToMany(() => Comment, (comment) => comment.user)
-  @Field(() => [Comment], { nullable: true })
   comments?: Comment[];
 
   @Field(() => Number, { defaultValue: 0 })
   likedByUser?: number;
 
-  @Field(() => Number)
+  @Field(() => Number, { defaultValue: 0 })
   score?: number;
 }
