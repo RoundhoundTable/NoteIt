@@ -19,7 +19,7 @@ export class GeneralResolver {
   @Query(() => [SearchResultUnion])
   async search(
     @Arg("searchQuery") searchQuery: string,
-    @Arg("skip", { nullable: true }) skip: number = 0,
+    @Arg("offset", { nullable: true }) offset: number = 0,
     @Arg("resultCount", { nullable: true }) resultCount: number = 6
   ): Promise<typeof SearchResultUnion[]> {
     let result = null;
@@ -28,18 +28,18 @@ export class GeneralResolver {
       const [searchType, searchParam] = searchQuery.split("/");
 
       if (searchType === "u")
-        result = Services.User.search(searchParam, skip, resultCount);
+        result = Services.User.search(searchParam, offset, resultCount);
       else if (searchType === "nb")
-        result = Services.User.search(searchParam, skip, resultCount);
+        result = Services.Notebook.search(searchParam, offset, resultCount);
     } else {
       const users = await Services.User.search(
         searchQuery,
-        skip,
+        offset,
         resultCount / 2
       );
       const notebooks = await Services.Notebook.search(
         searchQuery,
-        skip,
+        offset,
         resultCount / 2
       );
 
