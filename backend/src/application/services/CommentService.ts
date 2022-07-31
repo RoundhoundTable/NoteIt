@@ -17,6 +17,19 @@ export class CommentService {
     return await this.commentRepository.delete(id);
   }
 
+  async getFromNote(noteId: string, offset: number = 0) {
+    return await this.commentRepository.find({
+      where: {
+        noteId,
+      },
+      relations: {
+        user: true,
+      },
+      take: 5,
+      skip: offset,
+    });
+  }
+
   async get(id: string) {
     return await this.commentRepository.findOne({
       where: {
