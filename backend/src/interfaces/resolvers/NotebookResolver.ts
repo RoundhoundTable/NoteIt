@@ -1,13 +1,14 @@
+import { GraphQLError } from "graphql";
 import {
   Arg,
   Ctx,
   FieldResolver,
   Mutation,
+  Query,
   Resolver,
   Root,
   UseMiddleware,
 } from "type-graphql";
-import { ClientError } from "../../application/ClientError";
 import { IContext } from "../../application/interfaces/IContext";
 import { isAuth } from "../../application/middlewares/isAuth";
 import { Services } from "../../application/services";
@@ -31,6 +32,11 @@ export class NotebookResolver {
       : false;
   }
 
+  @FieldResolver(() => Number)
+  async memberCount(@Root() notebook: Entities.Notebook): Promise<number> {
+    return await Services.Membership.count(notebook.name);
+  }
+
   @Mutation(() => String)
   @UseMiddleware(isAuth)
   async createNotebook(
@@ -47,7 +53,18 @@ export class NotebookResolver {
     return notebook.name;
   }
 
-  @Mutation(() => Boolean)
+  @Query(() => Entities.Notebook, { nullable: true })
+  async notebook(@Arg("notebook") notebookName: string) {
+    const notebook: Entities.Notebook = await Services.Notebook.get(
+      notebookName
+    );
+
+    if (!notebook) throw new GraphQLError("Notebook not found");
+
+    return notebook;
+  }
+
+  @Mutation(() => Boolean, { nullable: true })
   @UseMiddleware(isAuth)
   async deleteNotebook(
     @Arg("notebook") notebook: string,
@@ -59,7 +76,7 @@ export class NotebookResolver {
     );
 
     if (role !== ERoles.OWNER)
-      throw new ClientError("Only the owner can delete a notebook");
+      throw new GraphQLError("Only the owner can delete a notebook");
     return (await Services.Notebook.delete(notebook)) ? true : false;
   }
 }
