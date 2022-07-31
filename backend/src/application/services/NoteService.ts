@@ -42,6 +42,9 @@ export class NoteService {
         notebook: true,
         user: true,
       },
+      order: {
+        createdOn: "DESC",
+      },
       take: 5,
       skip,
     });
@@ -62,6 +65,9 @@ export class NoteService {
         notebook: true,
         user: true,
       },
+      order: {
+        createdOn: "DESC",
+      },
       take: 5,
       skip,
     });
@@ -72,7 +78,6 @@ export class NoteService {
   async getOne(id: string) {
     return await this.noteRepository.findOne({
       relations: {
-        comments: true,
         notebook: true,
         user: true,
       },
