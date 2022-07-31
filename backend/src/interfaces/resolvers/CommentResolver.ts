@@ -1,5 +1,12 @@
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
-import { ClientError } from "../../application/ClientError";
+import { GraphQLError } from "graphql";
+import {
+  Arg,
+  Ctx,
+  Mutation,
+  Query,
+  Resolver,
+  UseMiddleware,
+} from "type-graphql";
 import { IContext } from "../../application/interfaces/IContext";
 import { isAuth } from "../../application/middlewares/isAuth";
 import { Services } from "../../application/services";
@@ -8,6 +15,19 @@ import { Entities } from "../../domain/entities";
 
 @Resolver(() => Entities.Comment)
 export class CommentResolver {
+  @Query(() => [Entities.Comment], { nullable: true })
+  async getNoteComments(
+    @Arg("id") id: string,
+    @Arg("offset", { nullable: true }) offset: number = 0
+  ) {
+    const comments: Entities.Comment[] = await Services.Comment.getFromNote(
+      id,
+      offset
+    );
+
+    return comments;
+  }
+
   @Mutation(() => Entities.Comment)
   @UseMiddleware(isAuth)
   async createComment(
@@ -20,7 +40,7 @@ export class CommentResolver {
     });
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => Boolean, { nullable: true })
   @UseMiddleware(isAuth)
   async deleteComment(
     @Arg("commentId") commentId: string,
@@ -29,7 +49,7 @@ export class CommentResolver {
     const comment = await Services.Comment.get(commentId);
 
     if (comment.username !== context.payload.username)
-      throw new ClientError("Only the owner can delete a comment");
+      throw new GraphQLError("Only the owner can delete a comment");
     return (await Services.Comment.delete(commentId)) ? true : false;
   }
 }
