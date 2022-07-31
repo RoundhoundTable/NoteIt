@@ -1,5 +1,6 @@
 import {
   Column,
+  CreateDateColumn,
   Entity,
   JoinColumn,
   OneToMany,
@@ -31,11 +32,16 @@ export class User {
   displayName: string;
 
   @Column({ name: "account_id" })
+  @Field(() => String)
   accountId: string;
 
   @Column({ default: DEFAULT_IMAGE_URL })
   @Field()
   thumbnail: string;
+
+  @CreateDateColumn({ name: "created_on" })
+  @Field()
+  createdOn: Date;
 
   @OneToOne(() => Account)
   @JoinColumn({ name: "account_id" })
