@@ -1,3 +1,4 @@
+import { GraphQLError } from "graphql";
 import {
   Arg,
   Ctx,
@@ -7,7 +8,6 @@ import {
   Root,
   UseMiddleware,
 } from "type-graphql";
-import { ClientError } from "../../application/ClientError";
 import { IContext } from "../../application/interfaces/IContext";
 import { isAuth } from "../../application/middlewares/isAuth";
 import { Services } from "../../application/services";
@@ -36,7 +36,7 @@ export class MembershipResolver {
       : false;
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => Boolean, { nullable: true })
   @UseMiddleware(isAuth)
   async changeRole(
     @Arg("membershipPayload") membershipPayload: ChangeRole,
@@ -48,7 +48,7 @@ export class MembershipResolver {
     );
 
     if (role !== ERoles.OWNER)
-      throw new ClientError("Only the owner can change an user role");
+      throw new GraphQLError("Only the owner can change an user role");
 
     return (await Services.Membership.changeRole(
       membershipPayload.username,
