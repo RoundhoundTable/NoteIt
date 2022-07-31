@@ -39,6 +39,6 @@ export class Comment {
 
   @ManyToOne(() => Note, (note) => note.comments)
   @JoinColumn({ name: "note_id" })
-  @Field(() => Note, { nullable: true })
+  @Field(() => Note)
   note: Note;
 }
