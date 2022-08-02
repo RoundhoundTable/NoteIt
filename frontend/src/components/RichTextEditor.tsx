@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState } from "react";
 import { EditorState, convertToRaw } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
-import "./RichText.css";
+import "../styles/RichText.css";
 import placeholder from "../assets/images/placeholder.jpg";
 import { Icon } from "@iconify/react";
 
