@@ -1,7 +1,6 @@
-import { INotebookResult } from "../services/GetMockSearchResults";
 import { useState } from "react";
 
-export const NotebookSearchbarResult = (data: INotebookResult) => {
+export const NotebookSearchbarResult = (data: any) => {
   const [joined, setJoined] = useState<boolean>(data.joinedByUser);
 
   return (
