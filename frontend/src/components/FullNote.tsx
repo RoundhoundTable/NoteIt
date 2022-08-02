@@ -21,16 +21,8 @@ export const FullNote = () => {
                 </div>
                 <div className="flex flex-col px-4">
                     <h2 className="font-semibold text-xl">Note Title</h2>
-                    <p className="text-base">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione illum maxime quibusdam? Delectus voluptatem quo veniam, accusamus optio labore. Quae, eius velit voluptates commodi nam amet placeat officiis consequuntur cupiditate.
-                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consectetur possimus suscipit sed. Numquam molestias labore tenetur. Facilis omnis debitis distinctio nisi provident quod neque explicabo unde aliquid accusantium? Similique, sapiente?
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt totam accusantium sint quidem iusto expedita fugit libero. Aperiam qui nihil ut minima! In architecto ab voluptates. Autem id unde numquam.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde earum sit modi possimus ducimus repellat, laboriosam, ab asperiores dolor illo consectetur placeat sint. Veniam voluptates, sint amet minima odio alias.
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus saepe autem odio minima beatae earum repellendus repudiandae ullam porro delectus nostrum a inventore, magni cum, eveniet omnis, quod odit doloribus.
-                        Dolore repellat, dignissimos tenetur itaque, aliquam repudiandae modi debitis voluptates commodi suscipit voluptate veniam, odio numquam cupiditate voluptas explicabo! Aut in, unde voluptate quas voluptatum consequatur accusantium quia dignissimos consectetur!
-                        Maxime ipsum eos neque inventore ad. Pariatur inventore nesciunt dolorum, nisi quae temporibus debitis alias error quam beatae quis, soluta iste ad amet molestias laudantium voluptate quasi deserunt voluptatem exercitationem.
-                        Temporibus voluptatem quam placeat praesentium illum nobis minima dolorum pariatur, aliquid repellendus quaerat voluptate corporis nihil optio aspernatur facere, veritatis quis tempore ad officiis. Neque pariatur adipisci debitis sunt delectus?
-                        Nesciunt soluta veritatis repellat in culpa labore incidunt obcaecati, ea voluptatum omnis iste. Dolores corrupti, omnis qui officiis est debitis earum. Nobis commodi possimus itaque voluptatum! Ex, molestiae tempora! Mollitia.
+                    <p className="text-base break-all">
+                        aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                     </p>
                 </div>
             </div>

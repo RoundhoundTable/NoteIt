@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import "./index.css";
+import "./styles/index.css";
 import { AccountLayout } from "./layouts/AccountLayout";
 import { MainLayout } from "./layouts/MainLayout";
 import { ErrorPage } from "./pages/ErrorPage";
