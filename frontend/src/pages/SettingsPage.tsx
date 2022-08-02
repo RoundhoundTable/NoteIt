@@ -26,9 +26,10 @@ export const SettingsPage = () => {
               <p className="text-2xl text-primary-500 font-semibold">Foto de Perfil</p>
               <div className="relative group">
                 <img src={placeholderPath} className="max-w-60 max-h-60 rounded-full"/>
-                <button className="w-12 h-12 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 grid justify-items-center items-center bg-primary-900/70 group-hover:w-60 group-hover:h-60">
-                  <Icon className="w-7 h-7 text-white parent" icon="icon-park-outline:add-picture" />
-                </button>
+                <div className="w-12 h-12 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 grid justify-items-center items-center bg-primary-900/70 group-hover:w-full group-hover:h-full">
+                  <Icon className="w-7 h-7 text-white" icon="icon-park-outline:add-picture" />
+                  <input type="file" className="absolute w-full h-full opacity-0"/>
+                </div>
               </div>
             </div>
           </TabPanel>
