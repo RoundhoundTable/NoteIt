@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="NoteIt" company="" webLink="http://" view-date="2022-05-23" view-index="0" gantt-divider-location="596" resource-divider-location="300" version="3.2.3243" locale="es_ES">
+<?xml version="1.0" encoding="UTF-8"?><project name="NoteIt" company="" webLink="http://" view-date="2022-06-13" view-index="0" gantt-divider-location="566" resource-divider-location="300" version="3.2.3244" locale="es_ES">
     <description/>
     <view zooming-state="default:6" id="gantt-chart">
-        <field id="tpd3" name="Nombre" width="305" order="0"/>
-        <field id="tpd4" name="Fecha de inicio" width="133" order="1"/>
-        <field id="tpd5" name="Fecha de fin" width="142" order="2"/>
+        <field id="tpd3" name="Nombre" width="289" order="0"/>
+        <field id="tpd4" name="Fecha de inicio" width="127" order="1"/>
+        <field id="tpd5" name="Fecha de fin" width="134" order="2"/>
         <option id="filter.completedTasks" value="false"/>
     </view>
     <view id="resource-table">
@@ -149,8 +149,8 @@
                 <depend id="33" type="2" difference="0" hardness="Strong"/>
             </task>
         </task>
-        <task id="16" name="Desarrollo" color="#8cb6ce" meeting="false" start="2022-05-24" duration="122" complete="0" thirdDate="2022-04-27" thirdDate-constraint="0" expand="true">
-            <task id="17" name="Frontend" meeting="false" start="2022-05-24" duration="59" complete="0" expand="true">
+        <task id="16" name="Desarrollo" color="#8cb6ce" meeting="false" start="2022-05-24" duration="116" complete="0" thirdDate="2022-04-27" thirdDate-constraint="0" expand="true">
+            <task id="17" name="Frontend" meeting="false" start="2022-05-24" duration="44" complete="0" expand="true">
                 <depend id="47" type="2" difference="0" hardness="Strong"/>
                 <task id="18" name="Diseño" color="#8cb6ce" meeting="false" start="2022-05-24" duration="5" complete="0" thirdDate="2022-05-23" thirdDate-constraint="0" expand="true">
                     <notes>
@@ -194,44 +194,44 @@
                     <depend id="29" type="2" difference="0" hardness="Strong"/>
                     <depend id="30" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="27" name="Crear publicacion" color="#8cb6ce" meeting="false" start="2022-06-16" duration="14" complete="0" thirdDate="2022-06-15" thirdDate-constraint="0" expand="true">
+                <task id="27" name="Crear publicacion" color="#8cb6ce" meeting="false" start="2022-06-16" duration="17" complete="0" thirdDate="2022-06-15" thirdDate-constraint="0" expand="true">
                     <notes>
                         <![CDATA[Escribimos el codigo para armar el diseño anteriormente creado para hacer una publicación.]]>
                     </notes>
                     <depend id="31" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="30" name="Ver publicacion" color="#8cb6ce" meeting="false" start="2022-06-16" duration="14" complete="0" thirdDate="2022-06-15" thirdDate-constraint="0" expand="true">
+                <task id="30" name="Ver publicacion" color="#8cb6ce" meeting="false" start="2022-06-16" duration="17" complete="0" thirdDate="2022-06-15" thirdDate-constraint="0" expand="true">
                     <notes>
                         <![CDATA[Escribimos el codigo para armar el diseño anteriormente creado para ver una publicación.]]>
                     </notes>
                     <depend id="31" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="29" name="Busqueda" color="#8cb6ce" meeting="false" start="2022-06-16" duration="14" complete="0" thirdDate="2022-06-15" thirdDate-constraint="0" expand="true">
+                <task id="29" name="Busqueda" color="#8cb6ce" meeting="false" start="2022-06-16" duration="17" complete="0" thirdDate="2022-06-15" thirdDate-constraint="0" expand="true">
                     <notes>
                         <![CDATA[Escribimos el codigo para armar el diseño anteriormente creado para hacer una búsqueda.]]>
                     </notes>
                     <depend id="31" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="28" name="Configuracion" color="#8cb6ce" meeting="false" start="2022-06-16" duration="14" complete="0" thirdDate="2022-06-15" thirdDate-constraint="0" expand="true">
+                <task id="28" name="Configuracion" color="#8cb6ce" meeting="false" start="2022-06-16" duration="17" complete="0" thirdDate="2022-06-15" thirdDate-constraint="0" expand="true">
                     <notes>
                         <![CDATA[Escribimos el codigo para armar el diseño anteriormente creado de la página de configuración.]]>
                     </notes>
                     <depend id="31" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="31" name="Prueba de Prototipos y Arreglos" color="#8cb6ce" meeting="false" start="2022-07-06" duration="2" complete="0" thirdDate="2022-06-13" thirdDate-constraint="0" expand="true">
+                <task id="31" name="Prueba de Prototipos y Arreglos" color="#8cb6ce" meeting="false" start="2022-07-11" duration="2" complete="0" thirdDate="2022-06-13" thirdDate-constraint="0" expand="true">
                     <notes>
                         <![CDATA[Probamos que las páginas creadas funcionen correctamente y corregimos cualquier error que exista.]]>
                     </notes>
                     <depend id="46" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="46" name="Busqueda de Errores y Optimizacion" color="#8cb6ce" meeting="false" start="2022-07-08" duration="26" complete="0" thirdDate="2022-07-07" thirdDate-constraint="0" expand="true">
+                <task id="46" name="Busqueda de Errores y Optimizacion" color="#8cb6ce" meeting="false" start="2022-07-13" duration="8" complete="0" thirdDate="2022-07-07" thirdDate-constraint="0" expand="true">
                     <notes>
                         <![CDATA[Probamos que las páginas creadas funcionen correctamente y hacemos cualquier modificación que sea necesaria.]]>
                     </notes>
                     <depend id="47" type="2" difference="0" hardness="Strong"/>
                 </task>
             </task>
-            <task id="32" name="Backend" color="#000000" meeting="false" start="2022-05-24" duration="59" complete="0" thirdDate="2022-05-23" thirdDate-constraint="0" expand="true">
+            <task id="32" name="Backend" color="#000000" meeting="false" start="2022-05-24" duration="44" complete="0" thirdDate="2022-05-23" thirdDate-constraint="0" expand="true">
                 <depend id="47" type="2" difference="0" hardness="Strong"/>
                 <task id="33" name="Servidor HTTP" color="#8cb6ce" meeting="false" start="2022-05-24" duration="5" complete="0" thirdDate="2022-05-23" thirdDate-constraint="0" expand="true">
                     <notes>
@@ -281,33 +281,33 @@
                     </notes>
                     <depend id="45" type="2" difference="0" hardness="Strong"/>
                 </task>
-                <task id="45" name="Prueba y Arreglos del funcionamiento del backend" color="#8cb6ce" meeting="false" start="2022-07-11" duration="25" complete="0" thirdDate="2022-09-06" thirdDate-constraint="0" expand="true">
+                <task id="45" name="Prueba y Arreglos del funcionamiento del backend" color="#8cb6ce" meeting="false" start="2022-07-11" duration="10" complete="0" thirdDate="2022-09-06" thirdDate-constraint="0" expand="true">
                     <notes>
                         <![CDATA[Testeamos y arreglamos problemas que encontremos en el backend.]]>
                     </notes>
                     <depend id="47" type="2" difference="0" hardness="Strong"/>
                 </task>
             </task>
-            <task id="47" name="Unir Backend y Frontend" color="#8cb6ce" meeting="false" start="2022-08-15" duration="20" complete="0" thirdDate="2022-05-23" thirdDate-constraint="0" expand="true">
+            <task id="47" name="Unir Backend y Frontend" color="#8cb6ce" meeting="false" start="2022-07-25" duration="29" complete="0" thirdDate="2022-05-23" thirdDate-constraint="0" expand="true">
                 <notes>
                     <![CDATA[Creamos todas las conexiones entre las páginas del frontend y el codigo del backend.]]>
                 </notes>
                 <depend id="48" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="48" name="Testing y Arreglos" color="#8cb6ce" meeting="false" start="2022-09-12" duration="25" complete="0" thirdDate="2022-09-19" thirdDate-constraint="0" expand="true">
+            <task id="48" name="Testing y Arreglos" color="#8cb6ce" meeting="false" start="2022-09-02" duration="25" complete="0" thirdDate="2022-09-19" thirdDate-constraint="0" expand="true">
                 <notes>
                     <![CDATA[Probamos el funcionamiento de NoteIt.]]>
                 </notes>
                 <depend id="49" type="2" difference="0" hardness="Strong"/>
             </task>
-            <task id="49" name="Creacion y Configuracion de Docker" color="#8cb6ce" meeting="false" start="2022-10-17" duration="18" complete="0" thirdDate="2022-11-01" thirdDate-constraint="0" expand="true">
+            <task id="49" name="Creacion y Configuracion de Docker" color="#8cb6ce" meeting="false" start="2022-10-07" duration="18" complete="0" thirdDate="2022-11-01" thirdDate-constraint="0" expand="true">
                 <notes>
                     <![CDATA[Creamos y configuramos un contenedor que tenga el frontend, backend y la base de datos con docker]]>
                 </notes>
                 <depend id="51" type="2" difference="0" hardness="Strong"/>
             </task>
         </task>
-        <task id="51" name="Hosting" color="#8cb6ce" meeting="false" start="2022-11-10" duration="15" complete="0" thirdDate="2022-11-16" thirdDate-constraint="0" expand="true">
+        <task id="51" name="Hosting" color="#8cb6ce" meeting="false" start="2022-11-02" duration="20" complete="0" thirdDate="2022-11-16" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Subimos el docker a un servicio de hosting.]]>
             </notes>
