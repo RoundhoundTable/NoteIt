@@ -18,6 +18,30 @@ export const Searchbar = () => {
     }
   };
 
+  const UserResult = {
+    "__typename": "User",
+    "username": "gglassborow0",
+    "displayName": "gdozdill0",
+    "thumbnail": "http://dummyimage.com/600x600.png/5fa2dd/ffffff"
+   }
+const NotebookResult =   {
+    "__typename": "Notebook",
+    "name": "nunc",
+    "thumbnail": "http://dummyimage.com/600x600.png/ff4444/ffffff",
+    "description": "Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.",
+    "memberCount": 431,
+    "joinedByUser": true,
+  }
+
+const NotebookResult2 =   {
+    "__typename": "Notebook",
+    "name": "zzzz",
+    "thumbnail": "http://dummyimage.com/600x600.png/ff4444/ffffff",
+    "description": "Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.",
+    "memberCount": 431,
+    "joinedByUser": true,
+  }
+
   return (
     <div className="py-1">
       <div>
@@ -34,6 +58,9 @@ export const Searchbar = () => {
         </div>
       </div>
       <SearchbarResultsContainer>
+      <SearchbarResult {...UserResult} />
+      <SearchbarResult {...NotebookResult} />
+      <SearchbarResult {...NotebookResult2} />
         {query !== "" ? (
           results.length > 0 ? (
             results.map((result, key) => {
