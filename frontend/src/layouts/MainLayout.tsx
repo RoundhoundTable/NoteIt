@@ -12,9 +12,11 @@ export const MainLayout = () => {
     });
 
     return(
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col h-screen">
             <TopNavbar/>
-            <Outlet />
+            <div className="h-full">
+                <Outlet />
+            </div>
             {width <= 767 && <BottomNavbar/>}
         </div>
     );
