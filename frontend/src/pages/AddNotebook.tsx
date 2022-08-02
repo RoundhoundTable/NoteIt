@@ -31,6 +31,7 @@ export const AddNotebook = () => {
                 <Icon
                   className="w-7 h-7 text-white parent"
                   icon="icon-park-outline:add-picture"
+                  // Somethin Something
                 />
               </button>
             </div>
