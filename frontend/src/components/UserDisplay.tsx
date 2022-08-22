@@ -9,10 +9,10 @@ export const UserDisplay = ({ role }: {role: string}) => {
 
     return (
         <li className="flex flex-row justify-between">
-        <div className="flex flex-row items-center gap-2">
+        <div className="flex flex-row items-center gap-2 md:pr-20">
             <img src={placeholderPath} className="w-10 h-10 rounded-full"></img>
             <div>
-                <p className="font-semibold">User-Moder</p>
+                <p className="font-semibold break-all">User-Moder</p>
                 <p className="font-light text-sm">u/User-Moder</p>
             </div>
             { role === "Owner" && <Icon className="w-5 h-5 text-primary-600" icon="bxs:crown" />}
