@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// model Account {
+//  id       String @id @default(uuid())
+//  email    String @unique
+//  password String
+//
+//  user User?
+//}
+
+model User {
+  username    String   @unique
+  displayName String
+  accountId   String   @unique
+  thumbnail   String   @default("https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/profile-pictures%2Fdefault.jpg?alt=media&token=b4d777a9-a23b-4812-a42b-b665b25ee496") @db.Text
+  createdOn   DateTime @default(now())
+
+  //account   Account      @relation(fields: [accountId], references: [id])
+  notes     Note[]
+  comments  Comment[]
+  notebooks Membership[]
+  votes     Vote[]
+}
+
+model Notebook {
+  name        String   @unique
+  thumbnail   String   @default("https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/notebook-thumbnails%2Fdefault.jpg?alt=media&token=a524f50f-9c72-48ce-b6bf-dd2dbc7f85a6") @db.Text
+  createdOn   DateTime @default(now())
+  description String
+
+  notes   Note[]
+  members Membership[]
+}
+
+model Note {
+  id           String   @id @default(uuid())
+  username     String
+  notebookName String
+  content      String   @db.Text
+  title        String
+  createdOn    DateTime @default(now())
+
+  user     User      @relation(fields: [username], references: [username])
+  notebook Notebook  @relation(fields: [notebookName], references: [name])
+  comments Comment[]
+  votes    Vote[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  username  String
+  noteId    String
+  content   String
+  createdOn DateTime @default(now())
+
+  user User @relation(fields: [username], references: [username])
+  note Note @relation(fields: [noteId], references: [id])
+}
+
+model Membership {
+  username     String
+  notebookName String
+  role         Roles  @default(USER)
+
+  user     User     @relation(fields: [username], references: [username])
+  notebook Notebook @relation(fields: [notebookName], references: [name])
+
+  @@unique([username, notebookName])
+}
+
+model Vote {
+  username String
+  noteId   String
+  value    Int
+
+  user User @relation(fields: [username], references: [username])
+  note Note @relation(fields: [noteId], references: [id])
+
+  @@unique([username, noteId])
+}
+
+enum Roles {
+  USER
+  MODERATOR
+  OWNER
+}
