@@ -9,7 +9,6 @@
     "outDir": "dist" ,
     "lib": ["es2021", "esnext"],
     "sourceMap": true,
-    "strict": true,
     "resolveJsonModule": true
   } 
 } 
