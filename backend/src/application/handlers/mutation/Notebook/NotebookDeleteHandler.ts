@@ -8,8 +8,19 @@ export const NotebookDeleteHandler: MutationHandlerFunc<
 > = async (
   payload: Pick<Notebook, "name">,
   prisma: PrismaClient,
-  user: User
+  user: User,
+  schema
 ) => {
+  await schema.validateAsync(payload);
+
+  const notebook = await prisma.notebook.findUnique({
+    where: {
+      name: payload.name,
+    },
+  });
+
+  if (!notebook) throw new GraphQLError("Not Found");
+
   const userRole = await prisma.membership.findUnique({
     where: {
       username_notebookName: {

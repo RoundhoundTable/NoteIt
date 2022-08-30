@@ -7,6 +7,8 @@ import { MembershipEditHandler } from "./Membership/MembershipEditHandler";
 import { MembershipJoinHandler } from "./Membership/MembershipJoinHandler";
 import { MembershiKickHandler } from "./Membership/MembershipKickHandler";
 import { MembershipLeaveHandler } from "./Membership/MembershipLeaveHandler";
+import Joi from "joi";
+import validation from "../../validation/Membership";
 
 export const MembershipMutationHandler = (
   _parent: any,
@@ -26,5 +28,12 @@ export const MembershipMutationHandler = (
     [EMembershipMutationType.EDIT]: MembershipEditHandler,
   };
 
-  return handlers[type](payload, ctx.prisma, ctx.user);
+  const validationSchema: Record<EMembershipMutationType, Joi.ObjectSchema> = {
+    [EMembershipMutationType.JOIN]: validation.joinSchema,
+    [EMembershipMutationType.LEAVE]: validation.leaveSchema,
+    [EMembershipMutationType.KICK]: validation.kickSchema,
+    [EMembershipMutationType.EDIT]: validation.editSchema,
+  };
+
+  return handlers[type](payload, ctx.prisma, ctx.user, validationSchema[type]);
 };

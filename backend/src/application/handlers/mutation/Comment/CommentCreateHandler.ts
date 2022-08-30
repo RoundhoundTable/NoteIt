@@ -4,7 +4,9 @@ import { CreateResult, MutationHandlerFunc } from "../../../types/Handlers";
 export const CommentCreateHandler: MutationHandlerFunc<
   Comment,
   CreateResult
-> = async (payload: Comment, prisma: PrismaClient, user: User) => {
+> = async (payload: Comment, prisma: PrismaClient, user: User, schema) => {
+  await schema.validateAsync(payload);
+
   const comment = await prisma.comment.create({
     data: {
       content: payload.content,

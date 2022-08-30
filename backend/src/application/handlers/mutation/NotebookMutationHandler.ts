@@ -6,6 +6,8 @@ import { MutationHandler, NotebookHandlerResult } from "../../types/Handlers";
 import { NotebookCreateHandler } from "./Notebook/NotebookCreateHandler";
 import { NotebookDeleteHandler } from "./Notebook/NotebookDeleteHandler";
 import { NotebookEditHandler } from "./Notebook/NotebookEditHandler";
+import Joi from "joi";
+import validation from "../../validation/Notebook";
 
 export const NotebookMutationHandler = (
   _parent: any,
@@ -24,5 +26,11 @@ export const NotebookMutationHandler = (
     [ENotebookMutationType.DELETE]: NotebookDeleteHandler,
   };
 
-  return handlers[type](payload, ctx.prisma, ctx.user);
+  const validationSchema: Record<ENotebookMutationType, Joi.ObjectSchema> = {
+    [ENotebookMutationType.CREATE]: validation.createSchema,
+    [ENotebookMutationType.EDIT]: validation.editSchema,
+    [ENotebookMutationType.DELETE]: validation.deleteSchema,
+  };
+
+  return handlers[type](payload, ctx.prisma, ctx.user, validationSchema[type]);
 };

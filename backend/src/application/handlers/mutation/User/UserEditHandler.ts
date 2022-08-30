@@ -1,6 +1,5 @@
 import { PrismaClient, User } from "@prisma/client";
 import { v4 } from "uuid";
-import { EFileStringFormat } from "../../../enumerators/EFileStringFormat";
 import { EPictureFolder } from "../../../enumerators/EPictureFolder";
 import CloudStorage from "../../../firebase/CloudStorage";
 import { IFile } from "../../../interfaces/IFile";
@@ -9,7 +8,8 @@ import { EditResult, MutationHandlerFunc } from "../../../types/Handlers";
 export const UserEditHandler: MutationHandlerFunc<User, EditResult> = async (
   payload: Pick<User, "displayName" | "thumbnail">,
   prisma: PrismaClient,
-  user: User
+  user: User,
+  schema
 ) => {
   const uploadThumbnail = async (): Promise<string | undefined> => {
     if (!payload.thumbnail) return undefined;
@@ -26,6 +26,7 @@ export const UserEditHandler: MutationHandlerFunc<User, EditResult> = async (
       EPictureFolder.PROFILE_PICTURE
     );
   };
+  await schema.validateAsync(payload);
 
   const edited = await prisma.user.update({
     where: {

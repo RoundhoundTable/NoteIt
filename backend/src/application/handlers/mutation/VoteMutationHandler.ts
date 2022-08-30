@@ -1,5 +1,6 @@
 import { GraphQLError } from "graphql";
 import { ApolloContext } from "../../graphql/context";
+import { voteSchema } from "../../validation/Vote";
 
 export const VoteMutationHandler = async (
   _parent: any,
@@ -8,7 +9,17 @@ export const VoteMutationHandler = async (
 ) => {
   if (!ctx.user) throw new GraphQLError("Forbidden");
 
-  const vote = await ctx.prisma.vote.upsert({
+  await voteSchema.validateAsync({ noteId, value });
+
+  const note = await ctx.prisma.note.findUnique({
+    where: {
+      id: noteId,
+    },
+  });
+
+  if (!note) throw new GraphQLError("Not found");
+
+  await ctx.prisma.vote.upsert({
     where: {
       username_noteId: {
         username: ctx.user.username,

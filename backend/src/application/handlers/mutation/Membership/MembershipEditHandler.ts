@@ -5,7 +5,28 @@ import { MutationHandlerFunc, EditResult } from "../../../types/Handlers";
 export const MembershipEditHandler: MutationHandlerFunc<
   Membership,
   EditResult
-> = async (payload: Membership, prisma: PrismaClient, user: User) => {
+> = async (payload: Membership, prisma: PrismaClient, user: User, schema) => {
+  await schema.validateAsync(payload);
+
+  const notebook = await prisma.notebook.findUnique({
+    where: {
+      name: payload.notebookName,
+    },
+  });
+
+  if (!notebook) throw new GraphQLError("Not found");
+
+  const target = await prisma.membership.findUnique({
+    where: {
+      username_notebookName: {
+        notebookName: payload.notebookName,
+        username: payload.username,
+      },
+    },
+  });
+
+  if (!target) throw new GraphQLError("Not found");
+
   const current = await prisma.membership.findUnique({
     where: {
       username_notebookName: {

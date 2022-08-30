@@ -12,8 +12,19 @@ export const MembershiKickHandler: MutationHandlerFunc<
 > = async (
   payload: Omit<Membership, "role">,
   prisma: PrismaClient,
-  user: User
+  user: User,
+  schema
 ) => {
+  await schema.validateAsync(payload);
+
+  const notebook = await prisma.notebook.findUnique({
+    where: {
+      name: payload.notebookName,
+    },
+  });
+
+  if (!notebook) throw new GraphQLError("Not found");
+
   const currentMembership = await prisma.membership.findUnique({
     where: {
       username_notebookName: {
@@ -22,6 +33,7 @@ export const MembershiKickHandler: MutationHandlerFunc<
       },
     },
   });
+
   const target = await prisma.membership.findUnique({
     where: {
       username_notebookName: {
@@ -30,6 +42,8 @@ export const MembershiKickHandler: MutationHandlerFunc<
       },
     },
   });
+
+  if (!target) throw new GraphQLError("Not found");
 
   if (
     currentMembership.role === Roles.USER ||

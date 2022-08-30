@@ -1,12 +1,11 @@
 import { User } from "@prisma/client";
 import { GraphQLError } from "graphql";
 import { ApolloContext } from "../../graphql/context";
-import {
-  ENoteMutationType,
-  EUserMutationType,
-} from "../../enumerators/EMutationTypes";
+import { EUserMutationType } from "../../enumerators/EMutationTypes";
 import { MutationHandler, UserHandlerResult } from "../../types/Handlers";
 import { UserEditHandler } from "./User/UserEditHandler";
+import validation from "../../validation/User";
+import Joi from "joi";
 
 export const UserMutationHandler = (
   _parent: any,
@@ -17,8 +16,12 @@ export const UserMutationHandler = (
 
   const handlers: MutationHandler<EUserMutationType, User, UserHandlerResult> =
     {
-      [ENoteMutationType.EDIT]: UserEditHandler,
+      [EUserMutationType.EDIT]: UserEditHandler,
     };
 
-  return handlers[type](payload, ctx.prisma, ctx.user);
+  const validationSchema: Record<EUserMutationType, Joi.ObjectSchema> = {
+    [EUserMutationType.EDIT]: validation.editSchema,
+  };
+
+  return handlers[type](payload, ctx.prisma, ctx.user, validationSchema[type]);
 };

@@ -12,7 +12,8 @@ export const NotebookEditHandler: MutationHandlerFunc<
 > = async (
   payload: Pick<Notebook, "description" | "thumbnail" | "name">,
   prisma: PrismaClient,
-  user: User
+  user: User,
+  schema
 ) => {
   const uploadThumbnail = async (): Promise<string | undefined> => {
     if (!payload.thumbnail) return undefined;
@@ -29,6 +30,16 @@ export const NotebookEditHandler: MutationHandlerFunc<
       EPictureFolder.NOTEBOOK_THUMBNAIL
     );
   };
+
+  await schema.validateAsync(payload);
+
+  const notebook = await prisma.notebook.findUnique({
+    where: {
+      name: payload.name,
+    },
+  });
+
+  if (!notebook) throw new GraphQLError("Not Found");
 
   const userRole = await prisma.membership.findUnique({
     where: {

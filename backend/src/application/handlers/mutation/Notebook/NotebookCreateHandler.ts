@@ -1,4 +1,5 @@
 import { Notebook, PrismaClient, Roles, User } from "@prisma/client";
+import { GraphQLError } from "graphql";
 import { v4 } from "uuid";
 import { EPictureFolder } from "../../../enumerators/EPictureFolder";
 import CloudStorage from "../../../firebase/CloudStorage";
@@ -11,7 +12,8 @@ export const NotebookCreateHandler: MutationHandlerFunc<
 > = async (
   payload: Omit<Notebook, "createdOn">,
   prisma: PrismaClient,
-  user: User
+  user: User,
+  schema
 ) => {
   const uploadThumbnail = async (): Promise<string | undefined> => {
     if (!payload.thumbnail) return undefined;
@@ -29,12 +31,22 @@ export const NotebookCreateHandler: MutationHandlerFunc<
     );
   };
 
+  const exists = await prisma.notebook.findUnique({
+    where: {
+      name: payload.name,
+    },
+  });
+
+  if (exists) throw new GraphQLError("Already Exists");
+
   const notebook = await prisma.notebook.create({
     data: {
       ...payload,
       thumbnail: await uploadThumbnail(),
     },
   });
+
+  await schema.validateAsync(payload);
 
   await prisma.membership.create({
     data: {
