@@ -1,7 +1,7 @@
 import { ApolloContext } from "../../graphql/context";
 
 export const UserQueryHandler = async (
-  _parent,
+  _parent: any,
   { username }: { username: string },
   ctx: ApolloContext
 ) => {

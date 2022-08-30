@@ -2,7 +2,7 @@ import { ApolloContext } from "../../graphql/context";
 import { Pagination } from "../../types/Pagination";
 
 export const NotesQueryHandler = async (
-  _parent,
+  _parent: any,
   {
     username,
     notebook,

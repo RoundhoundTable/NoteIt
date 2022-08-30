@@ -1,7 +1,7 @@
 import { ApolloContext } from "../../graphql/context";
 
 export const NotebookQueryHandler = async (
-  _parent,
+  _parent: any,
   { name }: { name: string },
   ctx: ApolloContext
 ) => {

@@ -4,7 +4,7 @@ import { Pagination } from "../../types/Pagination";
 import { SearchResult } from "../../types/Search";
 
 export const SearchQueryHandler = async (
-  _parent,
+  _parent: any,
   { query, ...pagination }: { query: string; limit: number; offset: number },
   ctx: ApolloContext
 ) => {

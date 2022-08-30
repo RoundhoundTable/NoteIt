@@ -1,7 +1,7 @@
 import { ApolloContext } from "../../graphql/context";
 
 export const NoteQueryHandler = async (
-  _parent,
+  _parent: any,
   { id }: { id: string },
   ctx: ApolloContext
 ) => {

@@ -2,7 +2,7 @@ import { ApolloContext } from "../../graphql/context";
 import { Pagination } from "../../types/Pagination";
 
 export const CommentsQueryHandler = async (
-  _parent,
+  _parent: any,
   { noteId, ...pagination }: { noteId: string; limit: number; offset: number },
   ctx: ApolloContext
 ) => {
