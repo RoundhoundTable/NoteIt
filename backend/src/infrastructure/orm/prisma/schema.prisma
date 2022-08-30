@@ -10,14 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model Account {
-//  id       String @id @default(uuid())
-//  email    String @unique
-//  password String
-//
-//  user User?
-//}
-
 model User {
   username    String   @unique
   displayName String
@@ -25,7 +17,6 @@ model User {
   thumbnail   String   @default("https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/profile-pictures%2Fdefault.jpg?alt=media&token=b4d777a9-a23b-4812-a42b-b665b25ee496") @db.Text
   createdOn   DateTime @default(now())
 
-  //account   Account      @relation(fields: [accountId], references: [id])
   notes     Note[]
   comments  Comment[]
   notebooks Membership[]
