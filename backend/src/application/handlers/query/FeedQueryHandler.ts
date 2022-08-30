@@ -34,5 +34,15 @@ export const FeedQueryHanlder = async (
     skip: pagination ? pagination.offset : 0,
   });
 
-  return notes;
+  const quantity = await ctx.prisma.note.count({
+    where: {
+      notebookName: {
+        in: memberships.map((membership) => membership.notebookName),
+      },
+    },
+  });
+
+  const hasMore = Boolean(quantity - (pagination.offset + notes.length));
+
+  return { hasMore, notes };
 };

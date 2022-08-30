@@ -21,5 +21,13 @@ export const CommentsQueryHandler = async (
     skip: pagination ? pagination.offset : 0,
   });
 
-  return comments;
+  const quantity = await ctx.prisma.comment.count({
+    where: {
+      noteId: noteId,
+    },
+  });
+
+  const hasMore = Boolean(quantity - (pagination.offset + comments.length));
+
+  return {hasMore, comments};
 };

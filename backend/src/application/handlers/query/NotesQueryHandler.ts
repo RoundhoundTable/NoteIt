@@ -26,5 +26,14 @@ export const NotesQueryHandler = async (
     skip: pagination ? pagination.offset : 0,
   });
 
-  return notes;
+  const quantity = await ctx.prisma.note.count({
+    where: {
+      username: username ? username : undefined,
+      notebookName: notebook ? notebook : undefined,
+    },
+  });
+
+  const hasMore = Boolean(quantity - (pagination.offset + notes.length));
+
+  return { hasMore, notes };
 };
