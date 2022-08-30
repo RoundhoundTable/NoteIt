@@ -6,11 +6,13 @@ import {
   ECommentMutationType,
   EUserMutationType,
 } from "../enumerators/EMutationTypes";
+import type Joi from "joi";
 
 export type MutationHandlerFunc<T, R> = (
   payload: T,
   prisma: PrismaClient,
-  user: User
+  user: User,
+  validationSchema?: Joi.ObjectSchema
 ) => R;
 export type MutationHandler<
   T extends
