@@ -22,15 +22,30 @@ const typeDefs = gql`
 
   type Query {
     note(id: String!): Note
-    notes(username: String, notebook: String, limit: Int!, offset: Int!): [Note]
+    notes(
+      username: String
+      notebook: String
+      limit: Int!
+      offset: Int!
+    ): NoteScroll
     user(username: String!): User
     _user: User
-    comments(noteId: String!, limit: Int!, offset: Int!): [Comment]
+    comments(noteId: String!, limit: Int!, offset: Int!): CommentScroll
     notebook(name: String!): Notebook
     search(query: String!, limit: Int!, offset: Int!): [SearchResult]
-    feed(limit: Int!, offset: Int!): [Note]
+    feed(limit: Int!, offset: Int!): NoteScroll
     members(notebook: String!): [Membership]
     joined: [Membership]
+  }
+
+  type NoteScroll {
+    hasMore: Boolean
+    notes: [Note]
+  }
+
+  type CommentScroll {
+    hasMore: Boolean
+    comments: [Comment]
   }
 
   type Mutation {
