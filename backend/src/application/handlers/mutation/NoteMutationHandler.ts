@@ -29,5 +29,5 @@ export const NoteMutationHandler = (
     [ENoteMutationType.DELETE]: validation.deleteSchema,
   };
 
-  return handlers[type](payload, ctx.prisma, ctx.user), validationSchema;
+  return handlers[type](payload, ctx.prisma, ctx.user, validationSchema[type]);
 };
