@@ -29,10 +29,12 @@
     "firebase-admin": "^11.0.1",
     "graphql": "^15.8.0",
     "graphql-scalars": "^1.18.0",
+    "joi": "^17.6.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
+    "@types/joi": "^17.2.3",
     "@types/node": "^18.7.13",
     "@types/uuid": "^8.3.4",
     "nodemon": "^2.0.16",
