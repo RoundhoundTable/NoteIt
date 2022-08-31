@@ -7,8 +7,8 @@
     "moduleResolution": "node", 
     "rootDir": "src", 
     "outDir": "dist" ,
-    "lib": ["es2018", "esnext.asynciterable"],
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "lib": ["es2021", "esnext"],
+    "sourceMap": true,
+    "resolveJsonModule": true
   } 
 } 

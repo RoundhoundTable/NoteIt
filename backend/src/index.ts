@@ -1,9 +1,8 @@
 import dotenv from "dotenv";
-import "reflect-metadata";
-import { HttpServer } from "./infrastructure/webserver/HttpServer";
+import { Server } from "./infrastructure/webserver/Server";
 
 dotenv.config();
 
-const server: HttpServer = new HttpServer();
+const server: Server = new Server();
 
 server.bootstrap();
