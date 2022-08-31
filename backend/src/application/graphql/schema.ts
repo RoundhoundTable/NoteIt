@@ -53,22 +53,22 @@ const typeDefs = gql`
     login(credentials: LoginMutationInput!): String
     note(
       type: NoteMutationType!
-      payload: NoteMutationInput!
+      payload: NoteMutationInput
     ): NoteMutationResult
     notebook(
       type: NotebookMutationType!
-      payload: NotebookMutationInput!
+      payload: NotebookMutationInput
     ): NotebookMutationResult
     membership(
       type: MembershipMutationType!
-      payload: MembershipMutationInput!
+      payload: MembershipMutationInput
     ): MembershipMutationResult
     comment(
       type: CommentMutationType!
-      payload: CommentMutationInput!
+      payload: CommentMutationInput
     ): CommentMutationResult
     vote(noteId: String!, value: Int!): Int
-    user(type: UserMutationType!, payload: UserMutationInput!): UserEditResult
+    user(type: UserMutationType!, payload: UserMutationInput): UserEditResult
   }
 
   type User {
@@ -210,6 +210,7 @@ const typeDefs = gql`
     email: String!
     username: String!
     password: String!
+    confirmPassword: String!
   }
 
   input LoginMutationInput {
