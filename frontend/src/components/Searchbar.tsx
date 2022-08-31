@@ -1,46 +1,43 @@
+import { useApolloClient, useLazyQuery } from "@apollo/client";
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { SearchbarResult } from "./SearchbarResult";
-import { SearchbarResultsContainer } from "./SearchbarResultsContainer";
+import { search, searchData, searchVars } from "../graphql/queries/search";
+import { UserNotebook } from "../types/Results";
+import { SearchContainer } from "./Search/Container";
+import { SearchResult } from "./Search/SearchResult";
 
 export const Searchbar = () => {
   const navigateTo = useNavigate();
+  const [Search, { data, loading }] = useLazyQuery<searchData, searchVars>(
+    search,
+    {
+      fetchPolicy: "no-cache",
+    }
+  );
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<any[]>([]);
+  const apolloClient = useApolloClient();
 
   const inputHandler = (ev: any) => setQuery(ev.target.value);
   const submitHandler = (ev: any) => {
     if (ev.keyCode === 13) {
       setQuery("");
-      navigateTo(`/search/${query}`);
+      navigateTo(`/s/${encodeURIComponent(query)}`);
     }
   };
 
-  const UserResult = {
-    "__typename": "User",
-    "username": "gglassborow0",
-    "displayName": "gdozdill0",
-    "thumbnail": "http://dummyimage.com/600x600.png/5fa2dd/ffffff"
-   }
-const NotebookResult =   {
-    "__typename": "Notebook",
-    "name": "nunc",
-    "thumbnail": "http://dummyimage.com/600x600.png/ff4444/ffffff",
-    "description": "Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.",
-    "memberCount": 431,
-    "joinedByUser": true,
-  }
-
-const NotebookResult2 =   {
-    "__typename": "Notebook",
-    "name": "zzzz",
-    "thumbnail": "http://dummyimage.com/600x600.png/ff4444/ffffff",
-    "description": "Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.",
-    "memberCount": 431,
-    "joinedByUser": true,
-  }
+  useEffect(() => {
+    apolloClient.cache.reset();
+    if (query.trim() !== "") {
+      Search({
+        variables: {
+          query: query,
+          limit: 3,
+          offset: 0,
+        },
+      });
+    }
+  }, [query]);
 
   return (
     <div className="py-1">
@@ -57,20 +54,15 @@ const NotebookResult2 =   {
           <Icon className="w-7 h-7 text-primary-900" icon="ci:search" />
         </div>
       </div>
-      <SearchbarResultsContainer>
-      <SearchbarResult {...UserResult} />
-      <SearchbarResult {...NotebookResult} />
-      <SearchbarResult {...NotebookResult2} />
-        {query !== "" ? (
-          results.length > 0 ? (
-            results.map((result, key) => {
-              return <SearchbarResult key={key} {...result} />;
-            })
-          ) : (
-            <li>No se han encontrado resultados</li>
-          )
-        ) : null}
-      </SearchbarResultsContainer>
+      {query.trim() !== "" && (
+        <SearchContainer isBarResult>
+          {loading && <p>Loading...</p>}
+          {data &&
+            data.search.map((result: UserNotebook, key: number) => (
+              <SearchResult key={key} data={result} isBarResult />
+            ))}
+        </SearchContainer>
+      )}
     </div>
   );
 };
