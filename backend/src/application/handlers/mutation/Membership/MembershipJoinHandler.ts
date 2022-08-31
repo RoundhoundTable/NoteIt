@@ -1,6 +1,7 @@
 import { Membership, PrismaClient, User } from "@prisma/client";
 import { GraphQLError } from "graphql";
 import { MutationHandlerFunc, JoinResult } from "../../../types/Handlers";
+import { formatError } from "../../../validation/formatError";
 
 export const MembershipJoinHandler: MutationHandlerFunc<
   Membership,
@@ -11,22 +12,26 @@ export const MembershipJoinHandler: MutationHandlerFunc<
   user: User,
   schema
 ) => {
-  await schema.validateAsync(payload);
+  try {
+    await schema.validateAsync(payload, { abortEarly: false });
 
-  const notebook = await prisma.notebook.findUnique({
-    where: {
-      name: payload.notebookName,
-    },
-  });
+    const notebook = await prisma.notebook.findUnique({
+      where: {
+        name: payload.notebookName,
+      },
+    });
 
-  if (!notebook) throw new GraphQLError("Not found");
+    if (!notebook) throw new GraphQLError("Not found");
 
-  const membership = await prisma.membership.create({
-    data: {
-      ...payload,
-      username: user.username,
-    },
-  });
+    const membership = await prisma.membership.create({
+      data: {
+        ...payload,
+        username: user.username,
+      },
+    });
 
-  return { joined: Boolean(membership) };
+    return { joined: Boolean(membership) };
+  } catch (error) {
+    throw new GraphQLError(JSON.stringify(formatError(error)));
+  }
 };

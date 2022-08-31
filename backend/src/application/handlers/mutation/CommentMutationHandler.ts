@@ -5,8 +5,8 @@ import { ApolloContext } from "../../graphql/context";
 import { MutationHandler, CommentHandlerResult } from "../../types/Handlers";
 import { CommentCreateHandler } from "./Comment/CommentCreateHandler";
 import { CommentDeleteHandler } from "./Comment/CommentDeleteHandler";
-import validation from "../../validation/Comment";
 import Joi from "joi";
+import { createSchema, deleteSchema } from "../../validation/Comment";
 
 export const CommentMutationHandler = (
   _parent: any,
@@ -24,10 +24,5 @@ export const CommentMutationHandler = (
     [ECommentMutationType.DELETE]: CommentDeleteHandler,
   };
 
-  const validationSchema: Record<ECommentMutationType, Joi.ObjectSchema> = {
-    [ECommentMutationType.CREATE]: validation.createSchema,
-    [ECommentMutationType.DELETE]: validation.deleteSchema,
-  };
-
-  return handlers[type](payload, ctx.prisma, ctx.user, validationSchema[type]);
+  return handlers[type](payload, ctx.prisma, ctx.user);
 };

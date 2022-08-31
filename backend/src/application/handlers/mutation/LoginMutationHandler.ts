@@ -4,8 +4,7 @@ import { LoginMutationInput } from "../../types/LoginMutationInput";
 import firebase from "../../../infrastructure/firebase/firebase";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { loginSchema } from "../../validation/Auth";
-import { FirebaseError } from "firebase/app";
-import Joi from "joi";
+import { formatError } from "../../validation/formatError";
 
 export const LoginMutationHandler = async (
   _parent: any,
@@ -13,7 +12,7 @@ export const LoginMutationHandler = async (
   ctx: ApolloContext
 ) => {
   try {
-    await loginSchema.validateAsync(credentials);
+    await loginSchema.validateAsync(credentials, { abortEarly: false });
 
     const auth = getAuth();
     const firebaseCredentials = await signInWithEmailAndPassword(
@@ -28,14 +27,6 @@ export const LoginMutationHandler = async (
 
     return token;
   } catch (error) {
-    if (error instanceof FirebaseError) {
-      throw new GraphQLError(error.code);
-    }
-    if (error instanceof Joi.ValidationError) {
-      console.log(error);
-      throw new GraphQLError(
-        error.details.map((err) => err.message).join("\n")
-      );
-    }
+    throw new GraphQLError(JSON.stringify(formatError(error)));
   }
 };

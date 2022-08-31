@@ -5,6 +5,7 @@ import {
   JoinResult,
   KickResult,
 } from "../../../types/Handlers";
+import { formatError } from "../../../validation/formatError";
 
 export const MembershiKickHandler: MutationHandlerFunc<
   Membership,
@@ -15,49 +16,54 @@ export const MembershiKickHandler: MutationHandlerFunc<
   user: User,
   schema
 ) => {
-  await schema.validateAsync(payload);
+  try {
+    await schema.validateAsync(payload, { abortEarly: false });
 
-  const notebook = await prisma.notebook.findUnique({
-    where: {
-      name: payload.notebookName,
-    },
-  });
-
-  if (!notebook) throw new GraphQLError("Not found");
-
-  const currentMembership = await prisma.membership.findUnique({
-    where: {
-      username_notebookName: {
-        notebookName: payload.notebookName,
-        username: user.username,
+    const notebook = await prisma.notebook.findUnique({
+      where: {
+        name: payload.notebookName,
       },
-    },
-  });
+    });
 
-  const target = await prisma.membership.findUnique({
-    where: {
-      username_notebookName: {
-        notebookName: payload.notebookName,
-        username: payload.username,
+    if (!notebook) throw new GraphQLError("Not found");
+
+    const currentMembership = await prisma.membership.findUnique({
+      where: {
+        username_notebookName: {
+          notebookName: payload.notebookName,
+          username: user.username,
+        },
       },
-    },
-  });
+    });
 
-  if (!target) throw new GraphQLError("Not found");
-
-  if (
-    currentMembership.role === Roles.USER ||
-    (currentMembership.role === Roles.MODERATOR && target.role === Roles.OWNER)
-  )
-    throw new GraphQLError("Forbidden");
-
-  const kicked = await prisma.membership.delete({
-    where: {
-      username_notebookName: {
-        ...payload,
+    const target = await prisma.membership.findUnique({
+      where: {
+        username_notebookName: {
+          notebookName: payload.notebookName,
+          username: payload.username,
+        },
       },
-    },
-  });
+    });
 
-  return { kicked: Boolean(kicked) };
+    if (!target) throw new GraphQLError("Not found");
+
+    if (
+      currentMembership.role === Roles.USER ||
+      (currentMembership.role === Roles.MODERATOR &&
+        target.role === Roles.OWNER)
+    )
+      throw new GraphQLError("Forbidden");
+
+    const kicked = await prisma.membership.delete({
+      where: {
+        username_notebookName: {
+          ...payload,
+        },
+      },
+    });
+
+    return { kicked: Boolean(kicked) };
+  } catch (error) {
+    throw new GraphQLError(JSON.stringify(formatError(error)));
+  }
 };

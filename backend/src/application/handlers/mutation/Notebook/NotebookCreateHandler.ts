@@ -5,6 +5,7 @@ import { EPictureFolder } from "../../../enumerators/EPictureFolder";
 import CloudStorage from "../../../firebase/CloudStorage";
 import { IFile } from "../../../interfaces/IFile";
 import { CreateResult, MutationHandlerFunc } from "../../../types/Handlers";
+import { formatError } from "../../../validation/formatError";
 
 export const NotebookCreateHandler: MutationHandlerFunc<
   Notebook,
@@ -15,46 +16,50 @@ export const NotebookCreateHandler: MutationHandlerFunc<
   user: User,
   schema
 ) => {
-  const uploadThumbnail = async (): Promise<string | undefined> => {
-    if (!payload.thumbnail) return undefined;
+  try {
+    const uploadThumbnail = async (): Promise<string | undefined> => {
+      if (!payload.thumbnail) return undefined;
 
-    const thumbnail: IFile = {
-      data: payload.thumbnail,
-      name: `${payload.name}-${v4()}`,
+      const thumbnail: IFile = {
+        data: payload.thumbnail,
+        name: `${payload.name}-${v4()}`,
+      };
+
+      await CloudStorage.upload(thumbnail, EPictureFolder.NOTEBOOK_THUMBNAIL);
+
+      return await CloudStorage.getDownloadURL(
+        thumbnail.name,
+        EPictureFolder.NOTEBOOK_THUMBNAIL
+      );
     };
 
-    await CloudStorage.upload(thumbnail, EPictureFolder.NOTEBOOK_THUMBNAIL);
+    await schema.validateAsync(payload, { abortEarly: false });
 
-    return await CloudStorage.getDownloadURL(
-      thumbnail.name,
-      EPictureFolder.NOTEBOOK_THUMBNAIL
-    );
-  };
+    const exists = await prisma.notebook.findUnique({
+      where: {
+        name: payload.name,
+      },
+    });
 
-  const exists = await prisma.notebook.findUnique({
-    where: {
-      name: payload.name,
-    },
-  });
+    if (exists) throw new GraphQLError("Already Exists");
 
-  if (exists) throw new GraphQLError("Already Exists");
+    const notebook = await prisma.notebook.create({
+      data: {
+        ...payload,
+        thumbnail: await uploadThumbnail(),
+      },
+    });
 
-  const notebook = await prisma.notebook.create({
-    data: {
-      ...payload,
-      thumbnail: await uploadThumbnail(),
-    },
-  });
+    await prisma.membership.create({
+      data: {
+        role: Roles.OWNER,
+        notebookName: notebook.name,
+        username: user.username,
+      },
+    });
 
-  await schema.validateAsync(payload);
-
-  await prisma.membership.create({
-    data: {
-      role: Roles.OWNER,
-      notebookName: notebook.name,
-      username: user.username,
-    },
-  });
-
-  return { created: notebook.name };
+    return { created: notebook.name };
+  } catch (error) {
+    throw new GraphQLError(JSON.stringify(formatError(error)));
+  }
 };
