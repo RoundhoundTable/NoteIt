@@ -3,5 +3,6 @@ export type RegisterMutationInput = {
     email: string;
     password: string;
     username: string;
+    confirmPassword: string;
   };
 };
