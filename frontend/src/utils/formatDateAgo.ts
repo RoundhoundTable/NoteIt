@@ -1,4 +1,4 @@
-export const formatProfileDate = (dateString: string) => {
+export const formatDateAgo = (dateString: string) => {
   const date: Date = new Date(dateString);
   const today: Date = new Date();
   const seconds = Math.floor((today.getTime() - date.getTime()) / 1000);
