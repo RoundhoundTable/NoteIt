@@ -1,9 +1,8 @@
 import { Logo } from "../components/Logo";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { register } from "../graphql/mutations/register";
-import { signInWithCustomToken } from "firebase/auth";
 import { AuthContext, useAuth } from "../context/AuthProvider";
 import { BUTTONS, NoteItButton } from "../components/NoteIt/Button";
 import { NoteItInput } from "../components/NoteIt/Input";
@@ -48,7 +47,7 @@ export const RegisterPage = () => {
     })();
   }, [data]);
 
-  if (currentUser) navigateTo("/");
+  if (currentUser) return <Navigate to="/" />;
 
   return (
     <div className="flex flex-col items-center justify-center">
