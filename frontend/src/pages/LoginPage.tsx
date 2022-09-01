@@ -1,12 +1,11 @@
 import { Logo } from "../components/Logo";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { login } from "../graphql/mutations/login";
 import { AuthContext, useAuth } from "../context/AuthProvider";
 import { BUTTONS, NoteItButton } from "../components/NoteIt/Button";
 import { NoteItInput } from "../components/NoteIt/Input";
-import { formatError } from "../utils/formatError";
 import { useForm } from "../hooks/useForm";
 
 interface ILoginForm {
