@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NoteContext } from "./context";
 import { vote } from "../../graphql/mutations/vote";
-import { AuthContext, useAuth } from "../../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import { Note } from "../../interfaces/Entities";
 
 interface IVotesProps {

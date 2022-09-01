@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ERoles } from "../enums/ERoles";
 import { Notebook, User } from "../interfaces/Entities";

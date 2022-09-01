@@ -5,10 +5,7 @@ import { formatDateAgo } from "../utils/formatDateAgo";
 import { useMutation } from "@apollo/client";
 import { membership } from "../graphql/mutations/membership";
 import { Notebook } from "../interfaces/Entities";
-import {
-  EMembershipMutationType,
-  ENotebookMutationType,
-} from "../enums/EMutationTypes";
+import { EMembershipMutationType } from "../enums/EMutationTypes";
 import { ImageInput } from "./ImageInput";
 import { notebook } from "../graphql/mutations/notebook";
 import { BUTTONS, NoteItButton } from "./NoteIt/Button";

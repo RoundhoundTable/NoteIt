@@ -4,7 +4,6 @@ import { AuthContext, useAuth } from "../../context/AuthProvider";
 import { DropdownMenu } from "../DropdownMenu";
 import { Logo } from "../Logo";
 import { Searchbar } from "../Searchbar";
-/*import { Searchbar } from "../Searchbar";*/
 import { NavContainer } from "./NavContainer";
 import { NavDropdown } from "./NavDropdown";
 import { NavItem } from "./NavItem";
