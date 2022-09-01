@@ -1,4 +1,4 @@
-import { HTMLInputTypeAttribute, PropsWithChildren } from "react";
+import { HTMLInputTypeAttribute } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface IInputProps {

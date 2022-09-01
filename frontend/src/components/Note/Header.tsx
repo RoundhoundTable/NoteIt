@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { PropsWithChildren, useContext, useState } from "react";
+import { PropsWithChildren, useContext } from "react";
 import { AuthContext, useAuth } from "../../context/AuthProvider";
 import { NoteContext } from "./context";
 

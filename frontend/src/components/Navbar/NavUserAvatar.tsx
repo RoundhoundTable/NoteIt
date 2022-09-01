@@ -1,6 +1,5 @@
-import { useContext } from "react";
 import defaultThumbnail from "../../assets/images/default_thumbnail.jpg";
-import { AuthContext, useAuth } from "../../context/AuthProvider";
+import { useAuth } from "../../context/AuthProvider";
 import { NavItem } from "./NavItem";
 
 interface INavUserAvatar {

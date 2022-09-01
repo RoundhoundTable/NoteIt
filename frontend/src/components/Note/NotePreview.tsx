@@ -8,7 +8,7 @@ import { Header } from "./Header";
 import { Metadata } from "./Metadata";
 import { DropdownMenu } from "../DropdownMenu";
 import { DropdownNoteOptions } from "../DropdownNote";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Note } from "../../interfaces/Entities";
 import { NoteContext } from "./context";
 

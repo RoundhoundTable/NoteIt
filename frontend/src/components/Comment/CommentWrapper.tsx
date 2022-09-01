@@ -1,4 +1,4 @@
-import { PropsWithChildren, useContext, useState } from "react";
+import { PropsWithChildren, useContext } from "react";
 import { CommentContext } from "./context";
 
 export const CommentWrapper = ({ children }: PropsWithChildren<any>) => {
