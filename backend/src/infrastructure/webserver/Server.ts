@@ -27,6 +27,10 @@ export class Server {
       },
       csrfPrevention: true,
       cache: "bounded",
+      cors: {
+        credentials: true,
+        origin: "http://localhost:3000",
+      },
       context: createContext,
       formatError(error: GraphQLError) {
         if (error.originalError instanceof GraphQLError) return error;

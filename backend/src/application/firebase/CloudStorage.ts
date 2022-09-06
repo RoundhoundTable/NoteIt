@@ -1,35 +1,28 @@
 import {
   FirebaseStorage,
   getDownloadURL,
-  getStorage,
   ref,
-  UploadResult,
+  StorageError,
   uploadString,
 } from "firebase/storage";
 import { EFileStringFormat } from "../enumerators/EFileStringFormat";
-import { IFile } from "../interfaces/IFile";
 import firebase from "../../infrastructure/firebase/firebase";
-import { EPictureFolder } from "../enumerators/EPictureFolder";
+import { v4 } from "uuid";
 
 class CloudStorage {
-  private readonly storage: FirebaseStorage = firebase.storage;
+  private static readonly storage: FirebaseStorage = firebase.storage;
 
-  async upload(
-    file: IFile,
-    folder: EPictureFolder,
-    format: EFileStringFormat = EFileStringFormat.dataUrl
-  ): Promise<UploadResult> {
-    const storageRef = ref(this.storage, `${folder}/${file.name}.jpg`);
-    return await uploadString(storageRef, file.data, format);
-  }
-
-  async getDownloadURL(
-    filename: string,
-    folder: EPictureFolder
+  static async upload(
+    data: string,
+    folder: "notebooks" | "users",
+    name: string
   ): Promise<string> {
-    const storageRef = ref(this.storage, `${folder}/${filename}.jpg`);
-    return await getDownloadURL(storageRef);
+    const storageRef = ref(this.storage, `${folder}/${name}/${v4()}`);
+    const result = await uploadString(storageRef, data, "data_url");
+    const downloadUrl = await getDownloadURL(result.ref);
+
+    return downloadUrl;
   }
 }
 
-export default new CloudStorage();
+export default CloudStorage;

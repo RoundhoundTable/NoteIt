@@ -30,7 +30,7 @@ export const RegisterMutationHandler = async (
 
     await ctx.prisma.user.create({
       data: {
-        username: credentials.username,
+        username: username,
         displayName: displayName,
         accountId: firebaseCredentials.user.uid,
       },

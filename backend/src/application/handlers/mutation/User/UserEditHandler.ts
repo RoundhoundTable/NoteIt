@@ -16,29 +16,15 @@ export const UserEditHandler: MutationHandlerFunc<User, EditResult> = async (
   try {
     await schema.validateAsync(payload, { abortEarly: false });
 
-    const uploadThumbnail = async (): Promise<string | undefined> => {
-      if (!payload.thumbnail) return undefined;
-
-      const thumbnail: IFile = {
-        data: payload.thumbnail,
-        name: `${user.username}-${v4()}`,
-      };
-
-      await CloudStorage.upload(thumbnail, EPictureFolder.PROFILE_PICTURE);
-
-      return await CloudStorage.getDownloadURL(
-        thumbnail.name,
-        EPictureFolder.PROFILE_PICTURE
-      );
-    };
-
     const edited = await prisma.user.update({
       where: {
         username: user.username,
       },
       data: {
         displayName: payload.displayName ?? undefined,
-        thumbnail: await uploadThumbnail(),
+        thumbnail: payload.thumbnail
+          ? await CloudStorage.upload(payload.thumbnail, "users", user.username)
+          : undefined,
       },
     });
 
