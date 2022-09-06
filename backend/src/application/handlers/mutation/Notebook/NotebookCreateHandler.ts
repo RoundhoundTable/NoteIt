@@ -17,22 +17,6 @@ export const NotebookCreateHandler: MutationHandlerFunc<
   schema
 ) => {
   try {
-    const uploadThumbnail = async (): Promise<string | undefined> => {
-      if (!payload.thumbnail) return undefined;
-
-      const thumbnail: IFile = {
-        data: payload.thumbnail,
-        name: `${payload.name}-${v4()}`,
-      };
-
-      await CloudStorage.upload(thumbnail, EPictureFolder.NOTEBOOK_THUMBNAIL);
-
-      return await CloudStorage.getDownloadURL(
-        thumbnail.name,
-        EPictureFolder.NOTEBOOK_THUMBNAIL
-      );
-    };
-
     await schema.validateAsync(payload, { abortEarly: false });
 
     const exists = await prisma.notebook.findUnique({
@@ -46,7 +30,13 @@ export const NotebookCreateHandler: MutationHandlerFunc<
     const notebook = await prisma.notebook.create({
       data: {
         ...payload,
-        thumbnail: await uploadThumbnail(),
+        thumbnail: payload.thumbnail
+          ? await CloudStorage.upload(
+              payload.thumbnail,
+              "notebooks",
+              payload.name
+            )
+          : undefined,
       },
     });
 

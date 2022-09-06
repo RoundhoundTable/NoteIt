@@ -16,22 +16,6 @@ export const NotebookEditHandler: MutationHandlerFunc<
   user: User,
   schema
 ) => {
-  const uploadThumbnail = async (): Promise<string | undefined> => {
-    if (!payload.thumbnail) return undefined;
-
-    const thumbnail: IFile = {
-      data: payload.thumbnail,
-      name: `${payload.name}-${v4()}`,
-    };
-
-    await CloudStorage.upload(thumbnail, EPictureFolder.NOTEBOOK_THUMBNAIL);
-
-    return await CloudStorage.getDownloadURL(
-      thumbnail.name,
-      EPictureFolder.NOTEBOOK_THUMBNAIL
-    );
-  };
-
   try {
     await schema.validateAsync(payload, { abortEarly: false });
 
@@ -57,7 +41,13 @@ export const NotebookEditHandler: MutationHandlerFunc<
     const edited = await prisma.notebook.update({
       data: {
         description: payload.description ?? undefined,
-        thumbnail: await uploadThumbnail(),
+        thumbnail: payload.thumbnail
+          ? await CloudStorage.upload(
+              payload.thumbnail,
+              "notebooks",
+              payload.name
+            )
+          : undefined,
       },
       where: {
         name: payload.name,
