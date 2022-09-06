@@ -14,7 +14,7 @@ model User {
   username    String   @unique
   displayName String
   accountId   String   @unique
-  thumbnail   String   @default("https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/profile-pictures%2Fdefault.jpg?alt=media&token=b4d777a9-a23b-4812-a42b-b665b25ee496") @db.Text
+  thumbnail   String   @default("https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/users%2Fdefault.jpg?alt=media&token=d19a223b-10b8-447e-9a66-5198d5e71ec1") @db.Text
   createdOn   DateTime @default(now())
 
   notes     Note[]
@@ -25,7 +25,7 @@ model User {
 
 model Notebook {
   name        String   @unique
-  thumbnail   String   @default("https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/notebook-thumbnails%2Fdefault.jpg?alt=media&token=a524f50f-9c72-48ce-b6bf-dd2dbc7f85a6") @db.Text
+  thumbnail   String   @default("https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/notebooks%2Fdefault.jpeg?alt=media&token=2242dc8e-6046-469f-ac64-66be05435a07") @db.Text
   createdOn   DateTime @default(now())
   description String
 
