@@ -17,8 +17,10 @@ export const EditNotePage = () => {
   const { id } = useParams();
   const { form, updateForm, errors, onError, resetErrors } =
     useForm<IEditNoteForm>({
-      id: id!,
-      content: "",
+      initialValue: {
+        id: id!,
+        content: "",
+      },
     });
   const { data } = useQuery<noteData>(note, {
     variables: {

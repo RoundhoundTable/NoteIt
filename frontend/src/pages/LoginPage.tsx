@@ -7,6 +7,7 @@ import { AuthContext, useAuth } from "../context/AuthProvider";
 import { BUTTONS, NoteItButton } from "../components/NoteIt/Button";
 import { NoteItInput } from "../components/NoteIt/Input";
 import { useForm } from "../hooks/useForm";
+import { loginSchema } from "../validation/Auth";
 
 interface ILoginForm {
   email: string;
@@ -16,25 +17,12 @@ interface ILoginForm {
 export const LoginPage = () => {
   const { signIn, currentUser } = useAuth() as AuthContext;
   const navigateTo = useNavigate();
-  const { form, onChange, errors, resetErrors, onError } =
-    useForm<ILoginForm>();
+  const { form, onChange, errors, onError, submit } = useForm<ILoginForm>({
+    validationSchema: loginSchema,
+  });
   const [Login, { data }] = useMutation(login, {
     onError,
   });
-
-  const submit = (ev: any) => {
-    ev.preventDefault();
-    resetErrors();
-
-    Login({
-      variables: {
-        credentials: {
-          email: form?.email,
-          password: form?.password,
-        },
-      },
-    });
-  };
 
   useEffect(() => {
     (async () => {
@@ -46,6 +34,17 @@ export const LoginPage = () => {
   }, [data]);
 
   if (currentUser) return <Navigate to="/" />;
+
+  const loginWrapper = async () => {
+    await Login({
+      variables: {
+        credentials: {
+          email: form?.email,
+          password: form?.password,
+        },
+      },
+    });
+  };
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -59,7 +58,7 @@ export const LoginPage = () => {
         <form
           className="flex flex-col border-2 rounded-md border-primary-400/30 w-80 pt-5 pl-5 pr-5 h-50 z-0"
           method="post"
-          onSubmit={submit}
+          onSubmit={(ev: any) => submit({ ev, func: loginWrapper })}
         >
           <NoteItInput
             label="Email"
