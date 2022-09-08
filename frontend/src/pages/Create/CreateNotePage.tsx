@@ -11,6 +11,7 @@ import { useForm } from "../../hooks/useForm";
 import { useAuth } from "../../context/AuthProvider";
 import { NoteItInput } from "../../components/NoteIt/Input";
 import { NoteItSelect } from "../../components/NoteIt/Select";
+import { createSchema } from "../../validation/Note";
 
 interface INoteForm {
   notebookName: string;
@@ -20,8 +21,10 @@ interface INoteForm {
 
 export const CreateNotePage = () => {
   const { currentUser } = useAuth();
-  const { form, updateForm, onChange, errors, onError, resetErrors } =
-    useForm<INoteForm>();
+  const { form, updateForm, onChange, errors, onError, submit } =
+    useForm<INoteForm>({
+      validationSchema: createSchema,
+    });
   const [CreateNote, { data }] = useMutation(note, {
     onError,
   });
@@ -29,8 +32,7 @@ export const CreateNotePage = () => {
   const [content, setContent] = useState<string>("");
   const navigateTo = useNavigate();
 
-  const submitNote = () => {
-    resetErrors();
+  const createNoteWrapper = async () => {
     CreateNote({
       variables: {
         type: ENoteMutationType.CREATE,
@@ -97,7 +99,7 @@ export const CreateNotePage = () => {
           <NoteItButton
             type={BUTTONS.PRIMARY}
             className="mt-5 font-semibold text-sm w-full md:w-40 md:h-8"
-            onClick={submitNote}
+            onClick={() => submit({ func: createNoteWrapper })}
           >
             Publicar
           </NoteItButton>
