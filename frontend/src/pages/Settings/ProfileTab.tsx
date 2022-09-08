@@ -7,6 +7,7 @@ import { EUserMutationType } from "../../enums/EMutationTypes";
 import { user } from "../../graphql/mutations/user";
 import { useForm } from "../../hooks/useForm";
 import { NoteItInput } from "../../components/NoteIt/Input";
+import { editSchema } from "../../validation/User";
 
 interface IProfileSettings {
   displayName?: string;
@@ -15,10 +16,13 @@ interface IProfileSettings {
 
 export const ProfileTab = () => {
   const { currentUser, fetch } = useAuth();
-  const { form, updateForm, onChange, errors, onError, resetErrors } =
+  const { form, updateForm, onChange, errors, onError, submit } =
     useForm<IProfileSettings>({
-      displayName: currentUser?.displayName,
-      thumbnail: currentUser?.thumbnail,
+      initialValue: {
+        displayName: currentUser?.displayName,
+        thumbnail: currentUser?.thumbnail,
+      },
+      validationSchema: editSchema,
     });
   const [imageData, setImageData] = useState();
   const [updateSettings, { data }] = useMutation(user, {
@@ -26,15 +30,14 @@ export const ProfileTab = () => {
   });
   const [saveMessage, setSaveMessage] = useState("Guardar Cambios");
 
-  const handleChange = () => {
+  const updateSettingsWrapper = async () => {
     if (
       form.displayName !== currentUser?.displayName ||
       form.thumbnail !== currentUser?.thumbnail
     ) {
       setSaveMessage("Guardando Cambios...");
-      resetErrors();
 
-      updateSettings({
+      await updateSettings({
         variables: {
           type: EUserMutationType.EDIT,
           payload: {
@@ -95,7 +98,7 @@ export const ProfileTab = () => {
           <NoteItButton
             type={BUTTONS.PRIMARY}
             className="w-full md:w-fit md:max-w-xs"
-            onClick={handleChange}
+            onClick={() => submit({ func: updateSettingsWrapper })}
           >
             {saveMessage}
           </NoteItButton>
