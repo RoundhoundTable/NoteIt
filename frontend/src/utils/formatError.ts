@@ -1,4 +1,5 @@
 import { ApolloError } from "@apollo/client";
+import { ValidationError } from "joi";
 import { NoteItError } from "../interfaces/Error";
 
 export const formatError = (error: ApolloError) => {
@@ -13,6 +14,6 @@ export const formatError = (error: ApolloError) => {
       };
     });
   }
-  console.log(errors);
+
   return errors;
 };
