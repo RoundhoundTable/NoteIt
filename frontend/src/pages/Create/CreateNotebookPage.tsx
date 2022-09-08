@@ -10,6 +10,7 @@ import { useAuth } from "../../context/AuthProvider";
 import { useForm } from "../../hooks/useForm";
 import { NoteItTextarea } from "../../components/NoteIt/Textarea";
 import { NoteItInput } from "../../components/NoteIt/Input";
+import { createSchema } from "../../validation/Notebook";
 
 interface INotebookForm {
   name: string;
@@ -20,15 +21,17 @@ interface INotebookForm {
 export const CreateNotebookPage = () => {
   const navigateTo = useNavigate();
   const { currentUser } = useAuth();
-  const { form, updateForm, onChange, errors, onError } =
-    useForm<INotebookForm>();
+  const { form, updateForm, onChange, errors, onError, submit } =
+    useForm<INotebookForm>({
+      validationSchema: createSchema,
+    });
   const [CreateNotebook, { data }] = useMutation(notebook, {
     onError,
   });
   const [imageData, setImageData] = useState("");
 
-  const submitNotebook = () => {
-    CreateNotebook({
+  const createNotebookWrapper = async () => {
+    await CreateNotebook({
       variables: {
         type: ENotebookMutationType.CREATE,
         payload: {
@@ -80,7 +83,7 @@ export const CreateNotebookPage = () => {
                 <NoteItButton
                   type={BUTTONS.PRIMARY}
                   className="mt-5 font-semibold w-full md:w-40 md:h-8"
-                  onClick={submitNotebook}
+                  onClick={() => submit({ func: createNotebookWrapper })}
                 >
                   Crear
                 </NoteItButton>
