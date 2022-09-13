@@ -44,12 +44,14 @@ export const Navbar = ({ mobileView = false }: INavbarProps) => {
               />
             </NavItem>
           )}
-          <NavItem link="/new">
-            <Icon
-              className="w-7 h-7 text-primary-500"
-              icon="fluent:add-circle-24-regular"
-            />
-          </NavItem>
+          {currentUser && (
+            <NavItem link="/new">
+              <Icon
+                className="w-7 h-7 text-primary-500"
+                icon="fluent:add-circle-24-regular"
+              />
+            </NavItem>
+          )}
           <NavUserAvatar onClick={dropdownHandler} />
         </NavItemContainer>
         {currentUser && showDropdown && (

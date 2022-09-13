@@ -1,5 +1,6 @@
 import { useMutation } from "@apollo/client";
 import { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthProvider";
 import { EMembershipMutationType } from "../../enums/EMutationTypes";
 import { ERoles } from "../../enums/ERoles";
 import { membership } from "../../graphql/mutations/membership";
@@ -11,6 +12,7 @@ interface INotebookResultProps {
 }
 
 export const NotebookResult = ({ data, isBar }: INotebookResultProps) => {
+  const { currentUser } = useAuth();
   const [EditMembership, { data: _data }] = useMutation(membership);
   const [joined, setJoined] = useState<boolean>(data.joinedByUser!);
 
@@ -49,7 +51,7 @@ export const NotebookResult = ({ data, isBar }: INotebookResultProps) => {
           </div>
         </a>
       </div>
-      {data.role !== ERoles.OWNER && (
+      {data.role !== ERoles.OWNER && currentUser && (
         <button
           onClick={() =>
             onClick(
@@ -92,7 +94,7 @@ export const NotebookResult = ({ data, isBar }: INotebookResultProps) => {
         <p className="text-primary-400 text-xs font-extralight text-right hidden md:block">
           {data.members} Miembros
         </p>
-        {data.role !== ERoles.OWNER && (
+        {data.role !== ERoles.OWNER && currentUser && (
           <button
             onClick={() =>
               onClick(
