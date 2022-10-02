@@ -49,8 +49,8 @@ export const NotebookDetails = ({
       </button>
       {showModal && (
         <div className="text-black w-screen h-screen fixed top-0 left-0 grid items-center justify-items-center z-10 bg-primary-200/10 backdrop-blur-[2px]">
-          <div className="bg-white w-1/3 rounded border-2 border-primary-500">
-            <div className="flex flex-col">
+          <div className="bg-white w-4/5 md:w-1/3 rounded border-2 border-primary-500 max-h-[55vh] overflow-auto">
+            <div className="flex flex-col sticky top-0">
               <button
                 className="flex flex-row justify-end m-2"
                 onClick={toggleModal}
@@ -65,7 +65,7 @@ export const NotebookDetails = ({
               <p className="text-base text-primary-700 border-b-2 border-primary-700">
                 Lista de miembros:
               </p>
-              <ul className="flex flex-col gap-5 p-2">
+              <ul className="flex flex-col gap-5 p-2 text-xl md:text-base">
                 {_members &&
                   _members.members.map((element: any, key: number) => {
                     return (
