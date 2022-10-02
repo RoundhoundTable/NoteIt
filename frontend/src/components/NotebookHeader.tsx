@@ -9,6 +9,7 @@ import { EMembershipMutationType } from "../enums/EMutationTypes";
 import { ImageInput } from "./ImageInput";
 import { notebook } from "../graphql/mutations/notebook";
 import { BUTTONS, NoteItButton } from "./NoteIt/Button";
+import { useAuth } from "../context/AuthProvider";
 
 interface INotebookHeaderProps {
   data: Notebook;
@@ -25,6 +26,7 @@ export const NotebookHeader = ({
   setImageData,
   submitChanges,
 }: INotebookHeaderProps) => {
+  const { currentUser } = useAuth();
   const [EditMembership, { data: _data }] = useMutation(membership);
   const [joined, setJoined] = useState<boolean>(data.joinedByUser!);
 
@@ -70,7 +72,7 @@ export const NotebookHeader = ({
         </div>
       </div>
       <div className="flex flex-row gap-5">
-        {!(data.role === ERoles.OWNER) && (
+        {!(data.role === ERoles.OWNER) && currentUser && (
           <NoteItButton
             type={joined ? BUTTONS.DANGER : BUTTONS.PRIMARY}
             onClick={handleMembership}

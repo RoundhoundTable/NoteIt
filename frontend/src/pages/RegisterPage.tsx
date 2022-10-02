@@ -7,6 +7,7 @@ import { AuthContext, useAuth } from "../context/AuthProvider";
 import { BUTTONS, NoteItButton } from "../components/NoteIt/Button";
 import { NoteItInput } from "../components/NoteIt/Input";
 import { useForm } from "../hooks/useForm";
+import { registerSchema } from "../validation/Auth";
 
 interface IRegisterForm {
   email: string;
@@ -17,18 +18,15 @@ interface IRegisterForm {
 
 export const RegisterPage = () => {
   const { signUp, currentUser } = useAuth() as AuthContext;
-  const { form, onChange, errors, resetErrors, onError } =
-    useForm<IRegisterForm>();
+  const { form, onChange, errors, onError, submit } = useForm<IRegisterForm>({
+    validationSchema: registerSchema,
+  });
   const navigateTo = useNavigate();
   const [Register, { data }] = useMutation(register, {
     onError,
   });
 
-  const submit = async (ev: any) => {
-    ev.preventDefault();
-
-    resetErrors();
-
+  const registerWrapper = async () => {
     await Register({
       variables: {
         credentials: {
@@ -61,7 +59,7 @@ export const RegisterPage = () => {
         <form
           className="flex flex-col border-2 rounded-md border-primary-400/30 w-80 pt-5 pl-5 pr-5 h-50 z-0"
           method="post"
-          onSubmit={submit}
+          onSubmit={(ev: any) => submit({ ev, func: registerWrapper })}
         >
           <NoteItInput
             label="Email"

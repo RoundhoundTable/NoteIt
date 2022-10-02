@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthProvider";
 import { ECommentMutationType } from "../enums/EMutationTypes";
 import { comment } from "../graphql/mutations/comment";
 import { useForm } from "../hooks/useForm";
+import { createSchema } from "../validation/Comment";
 import { BUTTONS, NoteItButton } from "./NoteIt/Button";
 import { NoteItInput } from "./NoteIt/Input";
 
@@ -20,18 +21,19 @@ interface ICommentForm {
 export const CommentForm = ({ noteId }: ICommentFormProps) => {
   const { currentUser } = useAuth();
   const navigateTo = useNavigate();
-  const { form, errors, onChange, resetErrors, onError } =
-    useForm<ICommentForm>({
+  const { form, errors, onChange, submit, onError } = useForm<ICommentForm>({
+    initialValue: {
       noteId: noteId,
       content: "",
-    });
+    },
+    validationSchema: createSchema,
+  });
   const [CreateComment, { data }] = useMutation(comment, {
     onError,
   });
 
-  const handleSubmit = () => {
-    resetErrors();
-    CreateComment({
+  const createCommentWrapper = async () => {
+    await CreateComment({
       variables: {
         type: ECommentMutationType.CREATE,
         payload: {
@@ -65,7 +67,7 @@ export const CommentForm = ({ noteId }: ICommentFormProps) => {
         <NoteItButton
           type={BUTTONS.PRIMARY}
           className={"w-20"}
-          onClick={handleSubmit}
+          onClick={(ev: any) => submit({ ev, func: createCommentWrapper })}
         >
           Enviar
         </NoteItButton>
