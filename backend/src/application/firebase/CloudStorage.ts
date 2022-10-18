@@ -1,7 +1,6 @@
 import {
   FirebaseStorage,
   getDownloadURL,
-  getStorage,
   ref,
   UploadResult,
   uploadString,
@@ -17,17 +16,19 @@ class CloudStorage {
   async upload(
     file: IFile,
     folder: EPictureFolder,
+    path: string,
     format: EFileStringFormat = EFileStringFormat.dataUrl
   ): Promise<UploadResult> {
-    const storageRef = ref(this.storage, `${folder}/${file.name}.jpg`);
+    const storageRef = ref(this.storage, `${folder}/${path}/${file.name}`);
     return await uploadString(storageRef, file.data, format);
   }
 
   async getDownloadURL(
     filename: string,
-    folder: EPictureFolder
+    folder: EPictureFolder,
+    path: string
   ): Promise<string> {
-    const storageRef = ref(this.storage, `${folder}/${filename}.jpg`);
+    const storageRef = ref(this.storage, `${folder}/${path}/${filename}`);
     return await getDownloadURL(storageRef);
   }
 }
