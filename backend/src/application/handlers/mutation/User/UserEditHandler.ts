@@ -24,11 +24,16 @@ export const UserEditHandler: MutationHandlerFunc<User, EditResult> = async (
         name: `${user.username}-${v4()}`,
       };
 
-      await CloudStorage.upload(thumbnail, EPictureFolder.PROFILE_PICTURE);
+      await CloudStorage.upload(
+        thumbnail,
+        EPictureFolder.PROFILE_PICTURE,
+        user.username
+      );
 
       return await CloudStorage.getDownloadURL(
         thumbnail.name,
-        EPictureFolder.PROFILE_PICTURE
+        EPictureFolder.PROFILE_PICTURE,
+        user.username
       );
     };
 

@@ -25,11 +25,16 @@ export const NotebookCreateHandler: MutationHandlerFunc<
         name: `${payload.name}-${v4()}`,
       };
 
-      await CloudStorage.upload(thumbnail, EPictureFolder.NOTEBOOK_THUMBNAIL);
+      await CloudStorage.upload(
+        thumbnail,
+        EPictureFolder.NOTEBOOK_THUMBNAIL,
+        notebook.name
+      );
 
       return await CloudStorage.getDownloadURL(
         thumbnail.name,
-        EPictureFolder.NOTEBOOK_THUMBNAIL
+        EPictureFolder.NOTEBOOK_THUMBNAIL,
+        notebook.name
       );
     };
 
