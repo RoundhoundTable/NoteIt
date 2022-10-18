@@ -8,7 +8,14 @@ dotenv.config();
 
 if (!admin.apps.length)
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
+    credential: admin.credential.cert(
+      JSON.parse(
+        Buffer.from(
+          process.env.FIREBASE_ADMIN_SERVICE_ACCOUNT as string,
+          "base64"
+        ).toString("ascii")
+      ) as admin.ServiceAccount
+    ),
   });
 
 if (!getApps().length) {
