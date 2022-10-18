@@ -10,6 +10,9 @@ import { createContext } from "../../application/graphql/context";
 import Mutation from "../../application/graphql/resolvers/mutation";
 import Enum from "../../application/graphql/resolvers/enum";
 import Union from "../../application/graphql/resolvers/union";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export class Server {
   private server: ApolloServer;
@@ -49,8 +52,12 @@ export class Server {
   }
 
   bootstrap() {
-    this.server.listen().then(({ url }) => {
-      console.log(`NoteIt Server ready at ${url}`);
-    });
+    this.server
+      .listen({
+        port: process.env.PORT || 4000,
+      })
+      .then(({ url }) => {
+        console.log(`NoteIt Server ready at ${url}`);
+      });
   }
 }
