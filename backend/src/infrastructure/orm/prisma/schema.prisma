@@ -27,7 +27,7 @@ model Notebook {
   name        String   @unique
   thumbnail   String   @default("https://firebasestorage.googleapis.com/v0/b/noteit-36706.appspot.com/o/notebook-thumbnails%2Fdefault.jpg?alt=media&token=a524f50f-9c72-48ce-b6bf-dd2dbc7f85a6") @db.Text
   createdOn   DateTime @default(now())
-  description String
+  description String?
 
   notes   Note[]
   members Membership[]
