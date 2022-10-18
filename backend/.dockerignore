@@ -1,0 +1,6 @@
+node_modules
+.dockerignore
+**/.git
+**/node_modules
+/src/**/*
+!/src/infrastructure/orm/prisma/schema.prisma
