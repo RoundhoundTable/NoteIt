@@ -1,0 +1,6 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/RoundhoundTable/noteit-backend.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/RoundhoundTable/noteit-frontend.git
