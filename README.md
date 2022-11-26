@@ -1,5 +1,5 @@
 <div align="center">
-  <img alt="NoteIt Logo" src="https://raw.githubusercontent.com/RoundhoundTable/NoteIt/master/docs/Logo.jpg" width="75%">
+  <img alt="NoteIt Logo" src="https://raw.githubusercontent.com/RoundhoundTable/NoteIt/master/docs/Carta de Presentacoin.png" width="75%">
 </div>
 
 <h1 align="center">Meet The Developers</h1>
